@@ -36,14 +36,16 @@
 
     class Tablero
     {
-        private $casillas;
+        public $casillas;
 
-        function constructor()
+        function __construct()
         {
-            $this->casillas = array(5);
-            foreach ($this->casillas as $casilla) {
-                $casilla = array(5);
-            }
+            $this->casillas = array();
+            $this->casillas = array_fill(0, 5, array());
+        }
+
+        function getTablero(){
+            return $this->casillas;
         }
 
         function rellenaTableroDeCasillas()
@@ -141,7 +143,7 @@
         private $pieza;
     
 
-        function constructor($posX, $posY)
+        function __construct($posX, $posY)
         {
             $this->posX = $posX;
             $this->posY = $posY;
@@ -170,7 +172,7 @@
         private $color;
         private $muerta;
 
-        function constructor($posX, $posY, $color)
+        function __construct($posX, $posY, $color)
         {
             $this->posX = $posX;
             $this->posY = $posY;
@@ -208,21 +210,17 @@
     }
 
     $tablero = new Tablero();
-    $tablero->rellenaTableroDeCasillas();
-    $tablero->rellenaTableroDeFichas();
+    // $tablero->rellenaTableroDeCasillas();
+    // // $tablero->rellenaTableroDeFichas();
+    var_dump($tablero->casillas);
+
+
+
     ?>
 
     <main>
         <div class="tablero">
-            <div class="casilla2"><?php ponerImagen(); ?></div>
-            <div class="casilla1"><?php ponerImagen(); ?></div>
-            <div class="casilla3"><?php ponerImagen(); ?></div>
-            <div class="casilla4"><?php ponerImagen(); ?></div>
-            <div class="casilla5"><?php ponerImagen(); ?></div>
-            <div class="casilla6"><?php ponerImagen(); ?></div>
-            <div class="casilla7"><?php ponerImagen(); ?></div>
-            <div class="casilla8"><?php ponerImagen(); ?></div>
-            <div class="casilla9"><?php ponerImagen(); ?></div>
+            
         </div>
         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="get">
             <input type="text" name="posXInicial">
