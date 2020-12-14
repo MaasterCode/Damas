@@ -32,7 +32,7 @@
 
 <body>
 
-    <?php    
+    <?php
 
     class Tablero
     {
@@ -42,9 +42,20 @@
         {
             $this->casillas = array();
             $this->casillas = array_fill(0, 5, array());
+
         }
 
-        function getTablero(){
+        function construyeTablero()
+        {
+            $this->casillas[0] = array_fill(0, 1, array());
+            $this->casillas[1] = array_fill(0, 1, array());
+            $this->casillas[2] = array_fill(0, 1, array());
+            $this->casillas[3] = array_fill(0, 1, array());
+            $this->casillas[4] = array_fill(0, 1, array());
+        }
+
+        function getTablero()
+        {
             return $this->casillas;
         }
 
@@ -57,15 +68,16 @@
             }
         }
 
-        function rellenaTableroDeFichas(){ //Esto iría después de rellenar de casillas para rellenar INICIALMENTE de piezas en su sitio.
+        function rellenaTableroDeFichas()
+        { //Esto iría después de rellenar de casillas para rellenar INICIALMENTE de piezas en su sitio.
             $ponerFicha = 0; //Esta variable es para hacerle el módulo y que alterne entre poner y no poner
 
             //Blancas
 
-            for ($i = 0; $i < 1 ; $i++) { //Por ahora pongo uno porque no es el tablero completo
+            for ($i = 0; $i < 1; $i++) { //Por ahora pongo uno porque no es el tablero completo
                 for ($j = 0; $j < count($this->casillas[$i]); $j++) {
-                    if($ponerFicha % 2 == 0){
-                        $this->casillas[$i][$j]['pieza'] = new Pieza($i , $j, 'blanco');
+                    if ($ponerFicha % 2 == 0) {
+                        $this->casillas[$i][$j]['pieza'] = new Pieza($i, $j, 'blanco');
                     }
                     ++$ponerFicha;
                 }
@@ -75,10 +87,10 @@
 
             //Negras
 
-            for ($i = count($this->casillas); $i > count($this->casillas)-1 ; $i--) { //Por ahora pongo uno porque no es el tablero completo
+            for ($i = count($this->casillas); $i > count($this->casillas) - 1; $i--) { //Por ahora pongo uno porque no es el tablero completo
                 for ($j = 0; $j < count($this->casillas[$i]); $j++) {
-                    if($ponerFicha % 2 == 0){
-                        $this->casillas[$i][$j]['pieza'] = new Pieza($i , $j, 'negro');
+                    if ($ponerFicha % 2 == 0) {
+                        $this->casillas[$i][$j]['pieza'] = new Pieza($i, $j, 'negro');
                     }
                     ++$ponerFicha;
                 }
@@ -93,43 +105,47 @@
             }
         }
 
-        function moverPieza($posXIni, $posYIni, $posXFin, $posYFin, $colorTurno){
-    
-            if(($posXIni == $posXIni + 1 || $posXIni ==$posXIni -1) && ($posYIni == $posYIni + 1)){ //Comprueba el movimiento en la dirección correcta
-                if($this->casillas[$posXIni][$posYIni]['ocupada'] === true){                        //Comprueba que la posición inicial tiene una pieza
-                    if($this->casillas[$posXIni][$posYIni]['ocupada']['color'] === $colorTurno){       //Si la pieza del color es del turno que toca
+        function moverPieza($posXIni, $posYIni, $posXFin, $posYFin, $colorTurno)
+        {
+
+            if (($posXIni == $posXIni + 1 || $posXIni == $posXIni - 1) && ($posYIni == $posYIni + 1)) { //Comprueba el movimiento en la dirección correcta
+                if ($this->casillas[$posXIni][$posYIni]['ocupada'] === true) {                        //Comprueba que la posición inicial tiene una pieza
+                    if ($this->casillas[$posXIni][$posYIni]['ocupada']['color'] === $colorTurno) {       //Si la pieza del color es del turno que toca
                         //Comprobar que la casilla a la que va, está ocupada
-                    }else{
+                    } else {
                         return false;
                     }
-                }else{
+                } else {
                     return false;
                 }
             }
         }
 
-        function compruebaTablero(){ //Para que recorra el tablero mirando si hay que comer obligatoriamente, esto se debería ejecutar al comienzo de cada turno y avisar.
+        function compruebaTablero()
+        { //Para que recorra el tablero mirando si hay que comer obligatoriamente, esto se debería ejecutar al comienzo de cada turno y avisar.
 
         }
 
-        function comerPieza(){ //No se si hace falta crear otra función a parte de la de mover para comer
+        function comerPieza()
+        { //No se si hace falta crear otra función a parte de la de mover para comer
 
         }
 
-        function muestraImagen($posX, $posY){
+        function muestraImagen($posX, $posY)
+        {
             $rutaColor = "";
             $rutaImaBlanca = "./Imagenes/CirculoBlanco"; //Ruta a la imagen de la pieza blanca
             $rutaImaNegra = "./Imagenes/CirculoNegro"; //ruta a la imagen de la pieza negra
-        
-            if($this->casillas[$posX][$posY]['ocupada'] == true){
-                if($this->casillas[$posX][$posY]['pieza']['color'] == 'blanco'){
+
+            if ($this->casillas[$posX][$posY]['ocupada'] == true) {
+                if ($this->casillas[$posX][$posY]['pieza']['color'] == 'blanco') {
                     $rutaColor = $rutaImaBlanca;
-                }else if($this->casillas[$posX][$posY]['pieza']['color'] == 'negro'){
+                } else if ($this->casillas[$posX][$posY]['pieza']['color'] == 'negro') {
                     $rutaColor = $rutaImaNegra;
                 }
             }
 
-            echo '<img class="fichas" src="'.$rutaColor.'">';
+            echo '<img class="fichas" src="' . $rutaColor . '">';
         }
     }
 
@@ -137,11 +153,11 @@
     {
 
 
-        private $posX;
-        private $posY;
-        private $ocupada;
-        private $pieza;
-    
+        public $posX;
+        public $posY;
+        public $ocupada;
+        public $pieza;
+
 
         function __construct($posX, $posY)
         {
@@ -161,7 +177,6 @@
             $this->ocupada = $cambio;
             $this->pieza = $pieza;
         }
-
     }
 
     class Pieza
@@ -210,17 +225,22 @@
     }
 
     $tablero = new Tablero();
-    // $tablero->rellenaTableroDeCasillas();
+    $tablero->construyeTablero();
+    $tablero->rellenaTableroDeCasillas();
     // // $tablero->rellenaTableroDeFichas();
-    var_dump($tablero->casillas);
+    
 
 
 
     ?>
 
+    <pre>
+        <?php var_dump($tablero->casillas);?>
+    </pre>
+
     <main>
         <div class="tablero">
-            
+            <!-- Aquí van las casillas -->
         </div>
         <form action="<?php $_SERVER['PHP_SELF'] ?>" method="get">
             <input type="text" name="posXInicial">
