@@ -10,10 +10,10 @@
     <style>
         .tablero {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: repeat(10, 1fr);
             grid-auto-rows: 1fr;
-            width: 500px;
-            height: 500px;
+            width: 700px;
+            height: 700px;
         }
 
         .tablero div {
@@ -41,25 +41,34 @@
         function __construct()
         {
             $this->casillas = array();
-            $this->casillas = array_fill(0, 5, array());
+            $this->casillas = array_fill(0, 10, array());
         }
+
+        //Para rellenar el tablero en el orden de la y
 
         function construyeTablero()
         {
-            $this->casillas[0] = array_fill(0, 3, array());
-            $this->casillas[1] = array_fill(0, 3, array());
-            $this->casillas[2] = array_fill(0, 3, array());
+
+            for ($i = 0; $i < count($this->casillas); $i++) {
+                $this->casillas[$i] = array_fill(0, 10, array());
+            }
         }
+
+        //Para que devuelva el array de casillas (El tablero)
 
         function getTablero()
         {
             return $this->casillas;
         }
 
+        //Para que devuelva una casilla en concreto
+
         function getCasilla($posX, $posY)
         {
             return $this->casillas[$posX][$posY];
         }
+
+        //Es un bucle anidado para crear en el array de tablero las casillas
 
         function rellenaTableroDeCasillas()
         {
@@ -70,46 +79,50 @@
             }
         }
 
+        //Rellena el tablero de fichas, esto solo se hace inicialmente
+
         function rellenaTableroDeFichas()
-        { //Esto iría después de rellenar de casillas para rellenar INICIALMENTE de piezas en su sitio.
-            $ponerFicha = true; //Esta variable es para hacerle el módulo y que alterne entre poner y no poner
+        {
 
             //Blancas
 
-            for ($i = 0; $i < count($this->casillas); $i++) { //Por ahora pongo uno porque no es el tablero completo
+            for ($i = 0; $i < 3; $i++) {
                 for ($j = 0; $j < count($this->casillas[$i]); $j++) {
-
-                    $this->casillas[$i][$j]->cambioOcupada(true, new Pieza($i, $j, 'blanco'));
+                    if (($i + $j) % 2 == 0) {
+                        $this->casillas[$i][$j]->cambioOcupada(true, new Pieza($i, $j, 'negro'));
+                    }
                 }
             }
-
-            $ponerFicha = true;
-
             //Negras
 
-            // for ($i = count($this->casillas); $i > count($this->casillas) - 1; $i--) { //Por ahora pongo uno porque no es el tablero completo
-            //     for ($j = 0; $j < count($this->casillas[$i]); $j++) {
-            //         if ($ponerFicha % 2 == 0) {
-            //             $this->casillas[$i][$j]['pieza'] = new Pieza($i, $j, 'negro');
-            //         }
-            //         ++$ponerFicha;
-            //     }
-            // }
-
-
+            for ($i = count($this->casillas) - 1; $i > count($this->casillas) - 4; $i--) {
+                for ($j = 0; $j < count($this->casillas[$i]); $j++) {
+                    if (($i + $j) % 2 == 0) {
+                        $this->casillas[$i][$j]->cambioOcupada(true, new Pieza($i, $j, 'blanco'));
+                    }
+                }
+            }
         }
+        //Pasándole la posición de la casilla inicial y la de final para que haga el movimiento
+
         function moverPieza($posXIni, $posYIni, $posXFin, $posYFin, $colorTurno)
         {
 
-            if (($posXIni == $posXIni + 1 || $posXIni == $posXIni - 1) && ($posYIni == $posYIni + 1)) { //Comprueba el movimiento en la dirección correcta
-                if ($this->casillas[$posXIni][$posYIni]['ocupada'] === true) {                        //Comprueba que la posición inicial tiene una pieza
-                    if ($this->casillas[$posXIni][$posYIni]['ocupada']['color'] === $colorTurno) {       //Si la pieza del color es del turno que toca
-                        //Comprobar que la casilla a la que va, está ocupada
-                    } else {
-                        return false;
+            if (($posXFin == $posXIni + 1 || $posXFin == $posXIni - 1) && ($posYIni == $posYIni + 1)) { //Comprueba el movimiento en la dirección correcta
+                if (isset($this->casillas[$posXFin][$posYFin])) {       //Comprueba que existe la casilla de destino
+                    if ($this->casillas[$posXFin][$posYFin]['ocupada'] == false) { //Comprueba que la casilla de destino no está ocupada
+                        if ($this->casillas[$posXIni][$posYIni]['ocupada'] === true) {                        //Comprueba que la posición inicial tiene una pieza
+                            if ($this->casillas[$posXIni][$posYIni]->getPieza()['color'] === $colorTurno) {       //Si la pieza del color es del turno que toca
+                                $pieza = $this->casillas[$posXIni][$posYIni]->getPieza();
+                                $this->casillas[$posXIni][$posYIni]->cambioOcupada(false, null);
+                                $this->casillas[$posXFin][$posYFin]->cambioOcupada(true, $pieza);
+                            } else {
+                                return false;
+                            }
+                        } else {
+                            return false;
+                        }
                     }
-                } else {
-                    return false;
                 }
             }
         }
@@ -123,6 +136,8 @@
         { //No se si hace falta crear otra función a parte de la de mover para comer
 
         }
+
+        //Esta función recibe una casilla y si está ocupada mira el color y obtiene la ruta de la imagen
 
         function muestraImagen($casilla)
         {
@@ -148,18 +163,12 @@
 
     class Casilla
     {
-
-
-        public $posX;
-        public $posY;
         public $ocupada;
         public $pieza;
 
 
-        function __construct($posX, $posY)
+        function __construct()
         {
-            $this->posX = $posX;
-            $this->posY = $posY;
             $this->ocupada = false;
             $this->pieza = null;
         }
@@ -226,6 +235,8 @@
         $posYFinal = $_GET['posYFinal'];
     }
 
+    $colorDelTurno = 'blanco'; //Empiezan las blancas
+
     $tablero = new Tablero();
     $tablero->construyeTablero();
     $tablero->rellenaTableroDeCasillas();
@@ -235,74 +246,48 @@
     ?>
     <pre>
     <?php
-    var_dump($tablero->getCasilla(0, 2));
-    var_dump($tablero->getTablero());
+    // echo count($tablero->getTablero());
+    // var_dump($tablero->getTablero()[7]);
     // $tablero->muestraImagen($tablero->getCasilla(0, 0));
     ?>
 </pre>
+    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="get">
+        <label for="posInicial">Posicion inicial</label><br>
+        <input type="text" id="posInicial" name="posXInicial" placeholder="posX"><br>
+        <input type="text" name="posYInicial" placeholder="posY"><br><br>
+        <label for="posFinal">Posicion final</label><br>
+        <input type="text" id="posFinal" name="posXFinal" placeholder="posX"><br>
+        <input type="text" name="posYFinal" placeholder="posY"><br><br>
+
+        <input type="hidden" name="color" value = "<?php if(isset($_GET['color']))  echo $_GET['color'] ?>" >
+
+        <input type="submit" name="enviado" value="Enviar">
+    </form>
+    </main>
 
 
     <main>
         <div class="tablero">
             <!-- Aquí van las casillas -->
 
-            <div>
-                <!-- 0 , 0  -->
-                <img class="fichas" src="<?php echo $tablero->muestraImagen($tablero->getCasilla(0, 0)) ?>" alt="No encontre">
+            <?php
 
-            </div>
-            <div>
-
-
-            </div>
-            <div>
-
-                <img class="fichas" src="<?php echo $tablero->muestraImagen($tablero->getCasilla(0, 2)) ?>" alt="No encontre">
-
-
-            </div>
-            <div>
-
-
-            </div>
-            <div>
-
-                <img class="fichas" src="<?php echo $tablero->muestraImagen($tablero->getCasilla(0, 2)) ?>" alt="No encontre">
-
-            </div>
-            <div>
-
-
-
-            </div>
-            <div>
-
-                <img class="fichas" src="<?php echo $tablero->muestraImagen($tablero->getCasilla(0, 2)) ?>" alt="No encontre">
-
-
-            </div>
-
-
-            <div></div>
-            <div>
-
-                <img class="fichas" src="<?php echo $tablero->muestraImagen($tablero->getCasilla(0, 2)) ?>" alt="No encontre">
-
-
-            </div>
+            for ($i = 0; $i < count($tablero->getTablero()); $i++) {
+                for ($j = 0; $j < count($tablero->getTablero()[$i]); $j++) {
+                    echo "<div>";
+                    if ($tablero->getCasilla($i, $j)->getOcupada() === true) {
+                        if (($i + $j) % 2 == 0) {
+                            echo "<img class = \"fichas\" src = " . $tablero->muestraImagen($tablero->getCasilla($i, $j)) . " alt = \"No encontre\">";
+                        }
+                    }
+                    echo "</div>";
+                }
+            }
+            ?>
         </div>
 
+        <br><br><br><br><br>
 
-        <form action="<?php $_SERVER['PHP_SELF'] ?>" method="get">
-            <input type="text" name="posXInicial">
-            <input type="text" name="posYInicial">
-
-            <input type="text" name="posXFinal">
-            <input type="text" name="posYFinal">
-
-            <input type="submit" name="enviado" value="Enviar">
-        </form>
-    </main>
 
 
 </body>
