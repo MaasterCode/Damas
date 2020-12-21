@@ -8,7 +8,9 @@
 <body>
 <pre>
     <?php
-        $tablero = array(array(" ", " ", " "), array(" ", " ", " "), array(" ", " ", " "));        
+        $fila = array(" ", " ", " ");
+        //$tablero = array(array(" ", " ", " "), array(" ", " ", " "), array(" ", " ", " "));
+        $tablero = array_fill(0, 3, $fila);
        
         function montaTablero(){
             global $tablero;
