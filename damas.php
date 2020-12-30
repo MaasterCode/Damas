@@ -287,7 +287,6 @@
                 }
                 echo "</div>";
             }
-            echo "<div class = \"par\"><p> $i </p></div>";
         }
     }
 
