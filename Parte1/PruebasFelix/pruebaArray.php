@@ -9,30 +9,44 @@
     <?php
         
         class Tablero{
-            public $fichas = array();
+            public $fichas;
+            function __construct()
+            {
+                $fichas = array();
+                
+            }
 
-            function meteFichas($ficha){
-                $this->fichas[] = $ficha;
+            function meteFichas($ficha, $i){
+                $this->fichas[$i][2] = $ficha;
             }
         }
 
         class Ficha{
-            public $color = 'blanco';
-            public static $id = 0;
+            public $color = "";
+
+            function __construct()
+            {
+                $color = 'blanco';
+            }
             
         }
 
         $tablero = new Tablero();
-        for($i = 0; $i < 9 ; $i++){
+        for($i = 0; $i < 2; $i = $i+2){
             $ficha = new Ficha();
-            $tablero->meteFichas($ficha);
-            var_dump($ficha);
+            var_dump(new Ficha());
+            $tablero->meteFichas($ficha, $i);
+    echo $i;
         }
+        
        
     ?>
     <pre>
         <?php
- var_dump($tablero->fichas);
+            var_dump($tablero->fichas);
+            if(empty($tablero->fichas[1])){
+                echo "hola";
+            }
         ?>
     </pre>
 </body>
