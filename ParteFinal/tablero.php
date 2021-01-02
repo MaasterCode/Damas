@@ -55,9 +55,19 @@
                     if(!empty($this->fichas[$i][$j])){
 
                         $this->casillas[$i][$j]->cambioOcupado($this->fichas[$i][$j]);
+
                     }
                 }
             }
+        }
+
+        public function mueveFicha($posXIni, $posYIni, $posXFin, $posYFin){
+            $ficha = $this->casillas[$posXIni][$posYIni]->ficha;
+            $ficha->mueveFicha($posXFin, $posYFin);
+            $this->fichas[$posXIni][$posYIni] = null;
+            $this->fichas[$posXFin][$posYFin] = $ficha;
+            $this->casillas[$posXIni][$posYIni]->cambioOcupado(null);
+            $this->casillas[$posXFin][$posYFin]->cambioOcupado($ficha);
         }
 
         //Devuelve false si una casilla está ocuapada

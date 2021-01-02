@@ -26,6 +26,10 @@
             grid-template-rows: repeat(8, 70px);
         }
 
+        .casillaN, .casillaB{
+            position: relative;
+        }
+
         .casillaB {
             background-color: #FFDEAD;
         }
@@ -46,19 +50,75 @@
 
 <body>
     <?php
+    if(!isset($_SESSION['empezado'])){
+        session_start();
+        $_SESSION['empezado'] = false;
+    }
 
     require_once('juego.php');
+
+
+    if($_SESSION['empezado'] == false){
+        $juego = new Juego();
+        $juego->comienzaJuego();
+        $_SESSION['empezado'] = true;
+    }else{
+        $juego = $_SESSION['juego'];
+    }
     
-    $juego = new Juego();
-    $juego->comienzaJuego();
+    if(isset($_POST['enviado'])){
+        $posXIni = $_POST['posXIni'];
+        $posYIni = $_POST['posYIni'];
+        $posXFin = $_POST['posXFin'];
+        $posYFin = $_POST['posYFin'];
+        $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
+       
+    }if(isset($_POST['resetear'])){
+        session_abort();
+        header("Location: main.php");
+    }
+
+    if($_SESSION['empezado']){
+        $juego->dibujaTablero();
+        echo 'dibujado';
+    }
+    $_SESSION['juego'] = $juego;
+
 
 
     ?>
+    <pre>
+        <?php
+
+        ?>
+    </pre>
+    <?php
+    ?>
     
+    <form action="<?php $_SERVER['PHP_SELF']?>" method = "post">
+    <input type="number" name = "posXIni" placeholder="posXIni">
+    <input type="number" name = "posYIni" placeholder="posYIni">
+    <input type="number" name = "posXFin" placeholder="posXFin">
+    <input type="number" name = "posYFin" placeholder="posYFin">
+    <input type="submit"  name = "enviado" value = "Enviar">
+    <input type="reset" value="Resetear">
+    </form>
+
+
+
+
+
+
+
+
+
+
+
         <pre>
         <?php
-//  var_dump($tablero->casillas);
+// var_dump($tablero->casillas);
 // var_dump($tablero->fichas);
+var_dump($juego);
         ?>
         </pre>
 </body>

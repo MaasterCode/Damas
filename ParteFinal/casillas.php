@@ -15,8 +15,14 @@ class Casilla
 
     public function cambioOcupado($ficha)
     {
+        if(!empty($ficha)){
             $this->ocupado = true;
             $this->ficha = $ficha;
+        }else{
+            $this->ocupado = false;
+            $this->ficha = null;
+        }
+
     }
     public function compruebaOcupado()
     {

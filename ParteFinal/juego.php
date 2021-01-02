@@ -8,6 +8,7 @@ class Juego
     public $turno;
     public $resultado;
     public $fin;
+    public $tablero;
 
     function __construct()
     {
@@ -18,15 +19,13 @@ class Juego
 
     public function creaTablero()
     {
-        global $tablero;
-        $tablero = new Tablero();
-        $tablero->crearFichas();
-        $tablero->montarTablero();
+        $this->tablero = new Tablero();
+        $this->tablero->crearFichas();
+        $this->tablero->montarTablero();
     }
     public function comienzaJuego()
     {
         $this->creaTablero();
-        $this->dibujaTablero();
     }
 
     public function compruebaFichas()
@@ -50,8 +49,10 @@ class Juego
 
         return false;
     }
-    public function mover()
+    public function mover($posXIni, $posYIni, $posXFin, $posYFin)
     {
+        $this->tablero->mueveFicha($posXIni, $posYIni, $posXFin, $posYFin);
+    
     }
     public function promocion()
     {
@@ -64,7 +65,6 @@ class Juego
 
     public function dibujaTablero()
     {
-        global $tablero;
         $fichaB = "Imagenes/circuloBlanco.svg";
         $fichaN = "Imagenes/circuloNegro.svg";
 ?>
@@ -76,36 +76,38 @@ class Juego
                 for ($i = $tamaño; $i >= 1; $i--) {
                     for ($j = 1; $j <= $tamaño; $j++) {
                         if (($j + $i) % 2 == 0) {
-                ?>
+                            ?>
                             <div class="casillaN">
                             <?php
                         }
                         if (($j + $i) % 2 != 0) {
                             ?>
-                                <div class="casillaB">
-                                    <?php
-                                }
-                                if ($tablero->casillas[$i][$j]->ocupado) {
-                                    if (strcmp($tablero->fichas[$i][$j]->color, "blanco") === 0) {
-                                    ?>
-                                        <img src="<?php echo $fichaB ?>" alt="">
-                                    <?php
-                                    }
-                                    if (strcmp($tablero->fichas[$i][$j]->color, "negro") === 0) {
-                                    ?>
-                                        <img src="<?php echo $fichaN ?>" alt="">
-                                <?php
-                                    }
-                                }
-                                ?>
-                                </div>
+                            <div class="casillaB">
+                            <?php
+                        }
+                        if ($this->tablero->casillas[$i][$j]->ocupado) {
+
+                             if (strcmp($this->tablero->fichas[$i][$j]->color, "blanco") === 0) {
+                            ?>
+                                <img src="<?php echo $fichaB ?>" alt="">
+                            <?php
+                            }
+                            if (strcmp($this->tablero->fichas[$i][$j]->color, "negro") === 0) {
+                            ?>
+                                <img src="<?php echo $fichaN ?>" alt="">
+                            <?php
+                            }
+                        }
+                            ?>
+                            <p style = "position: absolute; top: 0; left: 0; color: #FFDEAD; font-size: 25px; z-index: 10;"><?php echo "$i , $j"?></p>
+                            </div>
                         <?php
                     }
                 }
 
-                        ?>
-                            </div>
+                ?>
             </div>
+        </div>
     <?php
     }
 }

@@ -15,8 +15,9 @@
             $this->vivo = true;
             $this->coronado = false;
         }
-        public function mueveFicha() {
-
+        public function mueveFicha($nuevaPosX, $nuevaPosY) {
+            $this->posX = $nuevaPosX;
+            $this->posY = $nuevaPosY;
         }
         public function comeFicha() {
 
