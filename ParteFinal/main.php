@@ -4,29 +4,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="felix">
+    <meta name="authors" content="Felix&Belmont">
     <meta name="description" content="Juego de las damas">
     <title>Damas</title>
     <style>
         * {
             margin: 0;
             padding: 0;
+            --tamaño-casillas: 60px;
+        }
+
+        body {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .juego{
+            position: relative;
+            top: 50%;
+            transform: translateY(50%);
+            display: flex;
+            flex-direction: row;
+            width: 80%;
+            justify-content: space-around;
         }
 
         .tableroBox {
-            margin-top: 20px;
-            margin-left: 20px;
-            width: calc(8 * 70px);
-            height: calc(8 * 70px);
+            width: calc(8 * var(--tamaño-casillas));
+            height: calc(8 * var(--tamaño-casillas));
         }
 
         .tablero {
             display: grid;
-            grid-template-columns: repeat(8, 70px);
-            grid-template-rows: repeat(8, 70px);
+            grid-template-columns: repeat(8, var(--tamaño-casillas));
+            grid-template-rows: repeat(8, var(--tamaño-casillas));
         }
 
-        .casillaN, .casillaB{
+        .casillaN,
+        .casillaB {
             position: relative;
         }
 
@@ -40,87 +55,89 @@
 
         .tablero div img {
             display: block;
-            width: 65px;
-            height: 65px;
+            width: 55px;
+            height: 55px;
             z-index: 20;
             transform: translate(5%, 5%);
+        }
+
+        .formulario {
+            width: 400px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .formulario input {
+            width: 250px;
+            height: 30px;
+            margin: 20px 0;
         }
     </style>
 </head>
 
 <body>
-    <?php
-    if(!isset($_SESSION['empezado'])){
+    <div class="juego">
+        <?php
+
         session_start();
-        $_SESSION['empezado'] = false;
-    }
-
-    require_once('juego.php');
 
 
-    if($_SESSION['empezado'] == false){
-        $juego = new Juego();
-        $juego->comienzaJuego();
-        $_SESSION['empezado'] = true;
-    }else{
-        $juego = $_SESSION['juego'];
-    }
-    
-    if(isset($_POST['enviado'])){
-        $posXIni = $_POST['posXIni'];
-        $posYIni = $_POST['posYIni'];
-        $posXFin = $_POST['posXFin'];
-        $posYFin = $_POST['posYFin'];
-        $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
-       
-    }if(isset($_POST['resetear'])){
-        session_abort();
-        header("Location: main.php");
-    }
-
-    if($_SESSION['empezado']){
-        $juego->dibujaTablero();
-        echo 'dibujado';
-    }
-    $_SESSION['juego'] = $juego;
+        require_once('juego.php');
 
 
+        if (!isset($_POST['empezado'])) {
+            $juego = new Juego();
+            $juego->comienzaJuego();
+            $_POST['empezado'] = true;
+        } else {
+            $juego = unserialize($_SESSION['juego']);
+        }
 
-    ?>
-    <pre>
-        <?php
+        if (isset($_POST['enviado'])) {
+            $posXIni = $_POST['posXIni'];
+            $posYIni = $_POST['posYIni'];
+            $posXFin = $_POST['posXFin'];
+            $posYFin = $_POST['posYFin'];
+            $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
+        }
+        if (isset($_POST['resetear'])) {
+            session_abort();
+            header("Location: main.php");
+        }
+
+        if ($_POST['empezado'] == true) {
+            $juego->dibujaTablero();
+        }
+
+        $_SESSION['juego'] = serialize($juego);
 
         ?>
-    </pre>
-    <?php
-    ?>
-    
-    <form action="<?php $_SERVER['PHP_SELF']?>" method = "post">
-    <input type="number" name = "posXIni" placeholder="posXIni">
-    <input type="number" name = "posYIni" placeholder="posYIni">
-    <input type="number" name = "posXFin" placeholder="posXFin">
-    <input type="number" name = "posYFin" placeholder="posYFin">
-    <input type="submit"  name = "enviado" value = "Enviar">
-    <input type="reset" value="Resetear">
-    </form>
+        <div class="formulario">
+            <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
+                <input type="number" name="posXIni" placeholder="posXIni">
+                <input type="number" name="posYIni" placeholder="posYIni">
+                <input type="number" name="posXFin" placeholder="posXFin">
+                <input type="number" name="posYFin" placeholder="posYFin">
+                <input type="hidden" name="empezado" value="true">
+                <input type="submit" name="enviado" value="Enviar">
+                <input type="reset" value="Resetear">
+            </form>
+        </div>
 
 
 
 
 
-
-
-
-
-
-
-        <pre>
+        <!-- <pre> -->
         <?php
-// var_dump($tablero->casillas);
-// var_dump($tablero->fichas);
-var_dump($juego);
+        // var_dump($tablero->casillas);
+        // var_dump($tablero->fichas);
+        //var_dump($juego);
         ?>
-        </pre>
+        <!-- </pre> -->
+    </div>
 </body>
 
 </html>
