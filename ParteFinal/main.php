@@ -32,6 +32,7 @@
         .tableroBox {
             width: calc(8 * var(--tamaño-casillas));
             height: calc(8 * var(--tamaño-casillas));
+            border: 1px solid brown;
         }
 
         .tablero {
@@ -40,8 +41,7 @@
             grid-template-rows: repeat(8, var(--tamaño-casillas));
         }
 
-        .casillaN,
-        .casillaB {
+        .tablero div {
             position: relative;
         }
 
@@ -54,11 +54,13 @@
         }
 
         .tablero div img {
+            position: relative;
             display: block;
-            width: 55px;
-            height: 55px;
-            z-index: 20;
-            transform: translate(5%, 5%);
+            width: 50px;
+            z-index: 10;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .formulario {
