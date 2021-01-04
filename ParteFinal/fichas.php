@@ -19,8 +19,29 @@
             $this->posX = $nuevaPosX;
             $this->posY = $nuevaPosY;
         }
-        public function comeFicha() {
+        public function comeFicha($nuevaPosX, $nuevaPosY) {
+            if (strcmp($this->color, "blanco") === 0) {
+                $x = $nuevaPosX - 1;
+            } else if (strcmp($this->color, "negro") === 0) {
+                $x = $nuevaPosX + 1;
+            }
+           
+            if ($nuevaPosY > $this->posY) {
+                $y = $nuevaPosY - 1;
+            } else {
+                $y = $nuevaPosY + 1;
+            }
 
+            $this->posX = $nuevaPosX;
+            $this->posY = $nuevaPosY;
+
+            if (strcmp($this->color, "negro") === 0) {
+                $color = "blanco";
+            } else {
+                $color = "negro";
+            }
+            $fichaComida = new Ficha($x, $y, $color);
+            return $fichaComida;
         }
         public function cambioEstado() {
 

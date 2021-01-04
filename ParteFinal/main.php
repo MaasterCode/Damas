@@ -102,7 +102,11 @@
             $posYIni = $_POST['posYIni'];
             $posXFin = $_POST['posXFin'];
             $posYFin = $_POST['posYFin'];
-            $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
+            if ($juego->sePuedeComer()) {
+                $juego->comer($posXIni, $posYIni, $posXFin, $posYFin);
+            } else {
+                $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
+            }
         }
         if (isset($_POST['resetear'])) {
             session_abort();
@@ -118,10 +122,10 @@
         ?>
         <div class="formulario">
             <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                <input type="number" name="posXIni" placeholder="posXIni">
-                <input type="number" name="posYIni" placeholder="posYIni">
-                <input type="number" name="posXFin" placeholder="posXFin">
-                <input type="number" name="posYFin" placeholder="posYFin">
+                <input type="number" name="posXIni" placeholder="posXIni" required="required">
+                <input type="number" name="posYIni" placeholder="posYIni" required="required">
+                <input type="number" name="posXFin" placeholder="posXFin" required="required">
+                <input type="number" name="posYFin" placeholder="posYFin" required="required">
                 <input type="hidden" name="empezado" value="true">
                 <input type="submit" name="enviado" value="Enviar">
                 <input type="reset" value="Resetear">
@@ -132,13 +136,13 @@
 
 
 
-        <!-- <pre> -->
+         <!--<pre>--> 
         <?php
         // var_dump($tablero->casillas);
-        // var_dump($tablero->fichas);
+        //var_dump($juego->tablero->fichas);
         //var_dump($juego);
         ?>
-        <!-- </pre> -->
+         <!--</pre>--> 
     </div>
 </body>
 
