@@ -12,17 +12,20 @@
             margin: 0;
             padding: 0;
             --tamaño-casillas: 60px;
+            --tamaño-imagen: 50px;
         }
 
         body {
             display: flex;
             justify-content: space-evenly;
+            align-items: center;
+            flex-direction: row;
         }
 
         .juego{
-            position: relative;
+            position: absolute;
             top: 50%;
-            transform: translateY(50%);
+            transform: translateY(-50%);
             display: flex;
             flex-direction: row;
             width: 80%;
@@ -33,6 +36,7 @@
             width: calc(8 * var(--tamaño-casillas));
             height: calc(8 * var(--tamaño-casillas));
             border: 1px solid brown;
+            margin: 15px;
         }
 
         .tablero {
@@ -56,7 +60,7 @@
         .tablero div img {
             position: relative;
             display: block;
-            width: 50px;
+            width: var(--tamaño-imagen);
             z-index: 10;
             top: 50%;
             left: 50%;
@@ -69,18 +73,29 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            margin: 15px;
+        }
+
+        .formulario label{
+            margin-bottom: 20px;
         }
 
         .formulario input {
             width: 250px;
             height: 30px;
-            margin: 20px 0;
+           
         }
-    </style>
+
+        .formulario input {
+            margin: 5px 0 5px 0;
+        }
+
+        .formulario input#finalOrigen, input#finalDestino {
+            margin-bottom: 20px;
+        }    </style>
 </head>
 
 <body>
-    <div class="juego">
         <?php
 
         session_start();
@@ -102,16 +117,21 @@
             $posYIni = $_POST['posYIni'];
             $posXFin = $_POST['posXFin'];
             $posYFin = $_POST['posYFin'];
+
             if ($juego->sePuedeComer()) {
+                echo "toca comer";
                 $juego->comer($posXIni, $posYIni, $posXFin, $posYFin);
             } else {
+                echo "toca mover";
                 $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
             }
         }
-        if (isset($_POST['resetear'])) {
-            session_abort();
-            header("Location: main.php");
-        }
+        ?>
+        <div class="turno">
+            <p>Le toca jugar a las (php -> echo turno)</p>
+        </div>
+        <div class="juego">
+        <?php
 
         if ($_POST['empezado'] == true) {
             $juego->dibujaTablero();
@@ -122,10 +142,12 @@
         ?>
         <div class="formulario">
             <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-                <input type="number" name="posXIni" placeholder="posXIni" required="required">
-                <input type="number" name="posYIni" placeholder="posYIni" required="required">
-                <input type="number" name="posXFin" placeholder="posXFin" required="required">
-                <input type="number" name="posYFin" placeholder="posYFin" required="required">
+            <label for="origen">Origen</label><br>
+                <input type="number" name="posXIni" id="origen" placeholder="X" required="required" max = "8" min="1">
+                <input type="number" name="posYIni" id = "finalOrigen" placeholder="Y" required="required" max = "8" min="1"><br>
+                <label for="detino">Destino</label><br>
+                <input type="number" name="posXFin" id="destino" placeholder="X" required="required" max = "8" min="1">
+                <input type="number" name="posYFin" id = "finalDestino" placeholder="Y" required="required" max = "8" min="1">
                 <input type="hidden" name="empezado" value="true">
                 <input type="submit" name="enviado" value="Enviar">
                 <input type="reset" value="Resetear">
@@ -141,6 +163,10 @@
         // var_dump($tablero->casillas);
         //var_dump($juego->tablero->fichas);
         //var_dump($juego);
+        echo $juego->turno.'<br>';
+        if(count($juego->errores) > 0){
+            $juego->mostrarErrores();
+        }
         ?>
          <!--</pre>--> 
     </div>
