@@ -121,6 +121,7 @@
             if ($juego->sePuedeComer()) {
                 echo "toca comer";
                 $juego->comer($posXIni, $posYIni, $posXFin, $posYFin);
+                
             } else {
                 echo "toca mover";
                 $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
@@ -128,7 +129,7 @@
         }
         ?>
         <div class="turno">
-            <p>Le toca jugar a las (php -> echo turno)</p>
+            <p>Le toca jugar al <?php echo $juego->turno?></p>
         </div>
         <div class="juego">
         <?php
