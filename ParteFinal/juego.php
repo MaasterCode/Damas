@@ -39,7 +39,7 @@ class Juego
     {
         for ($i = 1; $i <= 8; $i++) {
             for ($j = 1; $j <= 8; $j++) {
-                if (isset($this->tablero->fichas[$i][$j])) {
+                if (isset($this->tablero->fichas[$i][$j]) && strcmp($this->tablero->fichas[$i][$j]->color, $this->turno) === 0) {
                 $ficha = $this->tablero->fichas[$i][$j];
                     if (strcmp($ficha->color, "blanco") === 0) {
                         if (isset($this->tablero->casillas[$i + 1][$j + 1]) && $this->tablero->casillas[$i + 1][$j + 1]->ocupado) {
