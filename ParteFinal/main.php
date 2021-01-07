@@ -13,23 +13,56 @@
             padding: 0;
             --tamaño-casillas: 60px;
             --tamaño-imagen: 50px;
+            box-sizing: border-box;
+            font-family: sans-serif;
         }
 
         body {
+            position: absolute;
+            top: 0;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        header {
+            height: 5vh;
+            min-height: 80px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        main {
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-            flex-direction: row;
+            flex-direction: column;
+            height: 70vh;
+            padding: 10px;
+            width: 100%;
         }
 
-        .juego{
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+        .info {
+            display: flex;
+            position: relative;
+            flex-direction: row;
+            justify-content: space-around;
+            min-width: 400px;
+            width: 40vw;
+        }
+
+        .info span {
+            font-weight: 600;
+        }
+
+        .juego {
+            position: relative;
             display: flex;
             flex-direction: row;
-            width: 80%;
             justify-content: space-around;
+            width: 100vw;
         }
 
         .tableroBox {
@@ -73,29 +106,50 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
+            align-items: center;
             margin: 15px;
         }
 
-        .formulario label{
+        .formulario label {
             margin-bottom: 20px;
+            font-size: 20px;
         }
 
-        .formulario input {
-            width: 250px;
+        .formulario input,
+        .formulario button {
+            width: 100px;
             height: 30px;
-           
+            margin: 10px 0 10px 0;
         }
 
-        .formulario input {
-            margin: 5px 0 5px 0;
-        }
-
-        .formulario input#finalOrigen, input#finalDestino {
+        .formulario#formulario input#finalOrigen,
+        input#finalDestino {
             margin-bottom: 20px;
-        }    </style>
+        }
+
+        #formulario {
+            width: 300px;
+            padding: 20px 20px;
+        }
+
+        .perdedor {
+            height: 10%;
+            font-size: 35px;
+            text-align: center;
+        }
+
+
+        .errores {
+            height: 15vh;
+        }
+    </style>
 </head>
 
 <body>
+    <header>
+        <h2>Bienvenido al juego de las damas</h2>
+    </header>
+    <main>
         <?php
 
         session_start();
@@ -117,60 +171,88 @@
             $posYIni = $_POST['posYIni'];
             $posXFin = $_POST['posXFin'];
             $posYFin = $_POST['posYFin'];
-
             if ($juego->sePuedeComer()) {
-                echo "toca comer";
+
                 $juego->comer($posXIni, $posYIni, $posXFin, $posYFin);
-                
             } else {
-                echo "toca mover";
+
                 $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
             }
         }
+        if ($juego->comprobarFichas()) {
         ?>
-        <div class="turno">
-            <p>Le toca jugar al <?php echo $juego->turno?></p>
-        </div>
-        <div class="juego">
+            <div class="info">
+                <div class="turno">
+                    <p>Le toca jugar al <span><?php echo $juego->turno ?></span>
+                        <?php
+                        if ($juego->sePuedeComer()) {
+                        ?>
+                            ,<br> le toca comer
+                        <?php
+                        }
+                        ?>
+                    </p>
+                </div>
+                <div class="score">
+                    <h3>Puntuación:</h3>
+                    <p>Fichas blancas <?php echo $juego->numBlancas ?></p>
+                    <p>Fichas negras <?php echo $juego->numNegras ?></p>
+                </div>
+            </div>
+
+            <div class="juego">
+                <?php
+
+                if ($_POST['empezado'] == true) {
+                    $juego->dibujaTablero();
+                }
+
+                $_SESSION['juego'] = serialize($juego);
+                ?>
+                <div class="formulario">
+                    <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" id="formulario">
+                        <label for="origen">Origen</label><br>
+                        <input type="number" name="posXIni" id="origen" placeholder="X" required="required" max="8" min="1">
+                        <input type="number" name="posYIni" id="finalOrigen" placeholder="Y" required="required" max="8" min="1"><br>
+                        <label for="detino">Destino</label><br>
+                        <input type="number" name="posXFin" id="destino" placeholder="X" required="required" max="8" min="1">
+                        <input type="number" name="posYFin" id="finalDestino" placeholder="Y" required="required" max="8" min="1">
+                        <input type="hidden" name="empezado" value="true">
+                        <input type="reset" value="Resetear">
+                        <input type="submit" value="Enviar" name="enviado">
+                    </form>
+                </div>
+
+                <div class="errores">
+                    <?php
+
+                    if (count($juego->errores) > 0) {
+                        $juego->mostrarErrores();
+                    }
+                    ?>
+                </div>
+            </div>
         <?php
-
-        if ($_POST['empezado'] == true) {
-            $juego->dibujaTablero();
-        }
-
-        $_SESSION['juego'] = serialize($juego);
+        } else {
 
         ?>
-        <div class="formulario">
-            <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-            <label for="origen">Origen</label><br>
-                <input type="number" name="posXIni" id="origen" placeholder="X" required="required" max = "8" min="1">
-                <input type="number" name="posYIni" id = "finalOrigen" placeholder="Y" required="required" max = "8" min="1"><br>
-                <label for="detino">Destino</label><br>
-                <input type="number" name="posXFin" id="destino" placeholder="X" required="required" max = "8" min="1">
-                <input type="number" name="posYFin" id = "finalDestino" placeholder="Y" required="required" max = "8" min="1">
-                <input type="hidden" name="empezado" value="true">
-                <input type="submit" name="enviado" value="Enviar">
-                <input type="reset" value="Resetear">
-            </form>
-        </div>
-
-
-
-
-
-         <!--<pre>--> 
+            <div class="perdedor">
+                <?php
+                if ($juego->numNegras < 1) { ?>
+                    <p>Han perdido las negras</p>
+                <?php
+                } else if ($juego->numBlancas < 1) { ?>
+                    <p>Han perdido las blancas</p>
+                <?php
+                }
+                ?>
+                <a href="./main.php">Volver a jugar</a>
+            </div>
         <?php
-        // var_dump($tablero->casillas);
-        //var_dump($juego->tablero->fichas);
-        //var_dump($juego);
-        echo $juego->turno.'<br>';
-        if(count($juego->errores) > 0){
-            $juego->mostrarErrores();
         }
         ?>
-         <!--</pre>--> 
-    </div>
+
+    </main>
 </body>
 
 </html>

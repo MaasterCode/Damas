@@ -10,6 +10,8 @@ class Juego
     public $fin;
     public $tablero;
     public $errores;
+    public $numBlancas;
+    public $numNegras;
 
     function __construct()
     {
@@ -17,30 +19,23 @@ class Juego
         $this->resultado = "";
         $this->fin = false;
         $this->errores = array();
+        $this->numBlancas = 0;
+        $this->numNegras = 0;
     }
 
-    public function creaTablero()
+    public function comienzaJuego()
     {
         $this->tablero = new Tablero();
         $this->tablero->crearFichas();
         $this->tablero->montarTablero();
     }
-    public function comienzaJuego()
-    {
-        $this->creaTablero();
-    }
 
-    public function compruebaFichas()
-    {
-
-        return false;
-    }
     public function sePuedeComer()
     {
         for ($i = 1; $i <= 8; $i++) {
             for ($j = 1; $j <= 8; $j++) {
                 if (isset($this->tablero->fichas[$i][$j]) && strcmp($this->tablero->fichas[$i][$j]->color, $this->turno) === 0) {
-                $ficha = $this->tablero->fichas[$i][$j];
+                    $ficha = $this->tablero->fichas[$i][$j];
                     if (strcmp($ficha->color, "blanco") === 0) {
                         if (isset($this->tablero->casillas[$i + 1][$j + 1]) && $this->tablero->casillas[$i + 1][$j + 1]->ocupado) {
                             if (strcmp($this->tablero->casillas[$i + 1][$j + 1]->ficha->color, "negro") === 0) {
@@ -80,7 +75,7 @@ class Juego
         return false;
     }
 
-    public function puedeSeguirComendo($posX, $posY) 
+    public function puedeSeguirComendo($posX, $posY)
     {
         $color = $this->tablero->fichas[$posX][$posY]->color;
 
@@ -121,20 +116,25 @@ class Juego
         return false;
     }
 
-    function comprobarFichas(){
-        $contadorBlancas = 0;
-        $contadorNegras = 0;
-        foreach($this->tablero->fichas as $ficha){
-            if(strcmp($ficha->color, 'blanco')){
-                $contadorBlancas = $contadorBlancas + 1;
-            }else if(strcmp($ficha->color, 'negro')){
-                $contadorNegras = $contadorNegras + 1;
-            };
-            if($contadorBlancas > 0 && $contadorNegras > 0){
-                return true;
-            }else{
-                return false;
+    function comprobarFichas()
+    {
+        $this->numBlancas = 0;
+        $this->numNegras = 0;
+        foreach ($this->tablero->fichas as $fila) {
+            foreach ($fila as $ficha) {
+                if (isset($ficha)) {
+                    if (strcmp($ficha->color, 'blanco') === 0) {
+                        $this->numBlancas++;
+                    } else if (strcmp($ficha->color, 'negro') === 0) {
+                        $this->numNegras++;
+                    }
+                }
             }
+        }
+        if ($this->numNegras < 1 || $this->numBlancas < 1) {
+            return false;
+        } else {
+            return true;
         }
     }
 
@@ -179,75 +179,76 @@ class Juego
     {
         if ($this->compruebaComer($posXIni, $posYIni, $posXFin, $posYFin)) {
             $this->tablero->comeFicha($posXIni, $posYIni, $posXFin, $posYFin);
-            if (!$this->puedeSeguirComendo($posXFin, $posYFin)) {$this->cambioTurno();}
+            if (!$this->puedeSeguirComendo($posXFin, $posYFin)) {
+                $this->cambioTurno();
+            }
         }
-    
     }
     public function elegirFicha()
     {
     }
-    function compruebaMover($posXIni, $posYIni, $posXFin, $posYFin){
+    function compruebaMover($posXIni, $posYIni, $posXFin, $posYFin)
+    {
         $this->errores = array();
-        if(isset($this->tablero->casillas[$posXFin][$posYFin])){ //Comprueba si la casilla final existe
-            if(strcmp($this->tablero->fichas[$posXIni][$posYIni]->color, $this->turno) === 0){ //Que el color sea el del turno       
-                $color = $this->tablero->fichas[$posXIni][$posYIni]->color;           
-                    if(strcmp($this->turno, "blanco") === 0){ //Si el turno es del blanco...
-                        if(($posYFin == $posYIni+1|| $posYFin == $posYIni-1) && $posXFin == $posXIni+1){ //....comprueba que mueva hacia arriba y alguno de los lados  
-                            if($this->tablero->casillas[$posXFin][$posYFin]->ocupado == false){
-                                //Y aquí acaba, si no ha habido errores abajo retorna true;
-                            }else{
-                                array_push($this->errores, "La casilla destino está ocupada");
-                            }
-                        }else{
-                            array_push($this->errores, "La dirección del movimiento no es correcto, las blancas mueve hacia arriba y a los lados una unidad");
+        if (isset($this->tablero->casillas[$posXFin][$posYFin])) { //Comprueba si la casilla final existe
+            if (strcmp($this->tablero->fichas[$posXIni][$posYIni]->color, $this->turno) === 0) { //Que el color sea el del turno       
+                $color = $this->tablero->fichas[$posXIni][$posYIni]->color;
+                if (strcmp($this->turno, "blanco") === 0) { //Si el turno es del blanco...
+                    if (($posYFin == $posYIni + 1 || $posYFin == $posYIni - 1) && $posXFin == $posXIni + 1) { //....comprueba que mueva hacia arriba y alguno de los lados  
+                        if ($this->tablero->casillas[$posXFin][$posYFin]->ocupado == false) {
+                            //Y aquí acaba, si no ha habido errores abajo retorna true;
+                        } else {
+                            array_push($this->errores, "La casilla destino está ocupada");
                         }
-
-                        
-                    }else if(strcmp($this->turno, "negro") === 0){ //Si el turno es del negro....
-                        if( ($posYIni+1 == $posYFin || $posYIni-1 == $posYFin) && ($posXIni-1 == $posXFin)){ //....comprueba que mueva hacia abajo y alguno de los lados
-
-                            if($this->tablero->casillas[$posXFin][$posYFin]->ocupado == false){
-                                //Y aquí acaba, si no ha habido errores abajo retorna true;
-                            }else{
-                                array_push($this->errores, "La casilla destino está ocupada");
-                            }
-                        }else{
-                            array_push($this->errores, "La dirección del movimiento no es correcto, las negras mueve hacia arriba y a los lados una unidad");
-                        }
-                    }else{
-                        array_push($this->errores, "El color no coincide con el del turno".$color.'<br>'.$this->turno);
+                    } else {
+                        array_push($this->errores, "La dirección del movimiento no es correcto, las blancas mueve hacia arriba y a los lados una unidad");
                     }
-            }else{
-                array_push($this->errores, "La ficha no es de tu color, le toca al ".$this->turno);
+                } else if (strcmp($this->turno, "negro") === 0) { //Si el turno es del negro....
+                    if (($posYIni + 1 == $posYFin || $posYIni - 1 == $posYFin) && ($posXIni - 1 == $posXFin)) { //....comprueba que mueva hacia abajo y alguno de los lados
+
+                        if ($this->tablero->casillas[$posXFin][$posYFin]->ocupado == false) {
+                            //Y aquí acaba, si no ha habido errores abajo retorna true;
+                        } else {
+                            array_push($this->errores, "La casilla destino está ocupada");
+                        }
+                    } else {
+                        array_push($this->errores, "La dirección del movimiento no es correcto, las negras mueve hacia arriba y a los lados una unidad");
+                    }
+                } else {
+                    array_push($this->errores, "El color no coincide con el del turno" . $color . '<br>' . $this->turno);
+                }
+            } else {
+                array_push($this->errores, "La ficha no es de tu color, le toca al " . $this->turno);
             }
-        }else{
+        } else {
             array_push($this->errores, "La casilla final no existe");
         }
-        
-        if(count($this->errores) > 0){
+
+        if (count($this->errores) > 0) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
     public function mover($posXIni, $posYIni, $posXFin, $posYFin)
     {
-        if($this->compruebaMover($posXIni, $posYIni, $posXFin, $posYFin)){
+        if ($this->compruebaMover($posXIni, $posYIni, $posXFin, $posYFin)) {
             $this->tablero->mueveFicha($posXIni, $posYIni, $posXFin, $posYFin);
             $this->cambioTurno();
         }
-    
     }
-    public function cambioTurno(){
-        if($this->turno == "blanco"){
+    public function cambioTurno()
+    {
+        if ($this->turno == "blanco") {
             $this->turno = "negro";
-        }else if($this->turno == "negro"){
+        } else if ($this->turno == "negro") {
             $this->turno = "blanco";
         }
     }
-    public function mostrarErrores(){
-        foreach($this->errores as $error){
-            echo $error."<br>";
+    public function mostrarErrores()
+    {
+        foreach ($this->errores as $error) {
+            echo $error . "<br>";
         }
     }
 
@@ -268,38 +269,38 @@ class Juego
                 for ($i = $tamaño; $i >= 1; $i--) {
                     for ($j = 1; $j <= $tamaño; $j++) {
                         if (($j + $i) % 2 == 0) {
-                            ?>
+                ?>
                             <div class="casillaN">
                             <?php
                         }
                         if (($j + $i) % 2 != 0) {
                             ?>
-                            <div class="casillaB">
-                            <?php
-                        }
-                        if ($this->tablero->casillas[$i][$j]->ocupado) {
+                                <div class="casillaB">
+                                    <?php
+                                }
+                                if ($this->tablero->casillas[$i][$j]->ocupado) {
 
-                             if (strcmp($this->tablero->fichas[$i][$j]->color, "blanco") === 0) {
-                            ?>
-                                <img src="<?php echo $fichaB ?>" alt="">
-                            <?php
-                            }
-                            if (strcmp($this->tablero->fichas[$i][$j]->color, "negro") === 0) {
-                            ?>
-                                <img src="<?php echo $fichaN ?>" alt="">
-                            <?php
-                            }
-                        }
-                            ?>
-                            <p style = "position: absolute; top: 0; left: 0; color: #FFDEAD; font-size: 25px; z-index: 10;"><?php echo "$i , $j"?></p>
-                            </div>
+                                    if (strcmp($this->tablero->fichas[$i][$j]->color, "blanco") === 0) {
+                                    ?>
+                                        <img src="<?php echo $fichaB ?>" alt="">
+                                    <?php
+                                    }
+                                    if (strcmp($this->tablero->fichas[$i][$j]->color, "negro") === 0) {
+                                    ?>
+                                        <img src="<?php echo $fichaN ?>" alt="">
+                                <?php
+                                    }
+                                }
+                                ?>
+                                <p style="position: absolute; top: 0; left: 0; color: #FFDEAD; font-size: 25px; z-index: 10;"><?php echo "$i , $j" ?></p>
+                                </div>
                         <?php
                     }
                 }
 
-                ?>
+                        ?>
+                            </div>
             </div>
-        </div>
     <?php
     }
 }
