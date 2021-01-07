@@ -292,7 +292,7 @@ class Juego
                                     }
                                 }
                                 ?>
-                                <p style="position: absolute; top: 0; left: 0; color: #FFDEAD; font-size: 25px; z-index: 10;"><?php echo "$i , $j" ?></p>
+                                <p><?php echo "$i,$j" ?></p>
                                 </div>
                         <?php
                     }

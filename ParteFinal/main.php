@@ -48,9 +48,9 @@
             display: flex;
             position: relative;
             flex-direction: row;
-            justify-content: space-around;
+            justify-content: space-between;
             min-width: 400px;
-            width: 40vw;
+            width: 75vw;
         }
 
         .info span {
@@ -76,6 +76,17 @@
             display: grid;
             grid-template-columns: repeat(8, var(--tamaño-casillas));
             grid-template-rows: repeat(8, var(--tamaño-casillas));
+        }
+
+
+        .tablero p {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            color: #FFDEAD;
+            font-size: 20px;
+            z-index: 10;
         }
 
         .tablero div {
@@ -142,6 +153,7 @@
         .errores {
             height: 15vh;
         }
+
     </style>
 </head>
 
@@ -183,7 +195,16 @@
         ?>
             <div class="info">
                 <div class="turno">
-                    <p>Le toca jugar al <span><?php echo $juego->turno ?></span>
+                    <p>Le toca jugar a 
+                        <span>
+                        <?php
+                        if(strcmp($juego->turno, "blanco") === 0){
+                            echo 'blancas';
+                        }else if(strcmp($juego->turno, "negro") === 0){
+                            echo 'negras';
+                        }
+                        ?>
+                        </span>
                         <?php
                         if ($juego->sePuedeComer()) {
                         ?>
