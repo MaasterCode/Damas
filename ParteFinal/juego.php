@@ -189,39 +189,42 @@ class Juego
     }
     function compruebaMover($posXIni, $posYIni, $posXFin, $posYFin)
     {
-        $this->errores = array();
-        if (isset($this->tablero->casillas[$posXFin][$posYFin])) { //Comprueba si la casilla final existe
-            if (strcmp($this->tablero->fichas[$posXIni][$posYIni]->color, $this->turno) === 0) { //Que el color sea el del turno       
-                $color = $this->tablero->fichas[$posXIni][$posYIni]->color;
-                if (strcmp($this->turno, "blanco") === 0) { //Si el turno es del blanco...
-                    if (($posYFin == $posYIni + 1 || $posYFin == $posYIni - 1) && $posXFin == $posXIni + 1) { //....comprueba que mueva hacia arriba y alguno de los lados  
-                        if ($this->tablero->casillas[$posXFin][$posYFin]->ocupado == false) {
-                            //Y aquí acaba, si no ha habido errores abajo retorna true;
+        if (isset($this->tablero->fichas[$posXIni][$posYIni])) {
+            if (isset($this->tablero->casillas[$posXFin][$posYFin])) { //Comprueba si la casilla final existe
+                if (strcmp($this->tablero->fichas[$posXIni][$posYIni]->color, $this->turno) === 0) { //Que el color sea el del turno       
+                    $color = $this->tablero->fichas[$posXIni][$posYIni]->color;
+                    if (strcmp($this->turno, "blanco") === 0) { //Si el turno es del blanco...
+                        if (($posYFin == $posYIni + 1 || $posYFin == $posYIni - 1) && $posXFin == $posXIni + 1) { //....comprueba que mueva hacia arriba y alguno de los lados  
+                            if ($this->tablero->casillas[$posXFin][$posYFin]->ocupado == false) {
+                                //Y aquí acaba, si no ha habido errores abajo retorna true;
+                            } else {
+                                array_push($this->errores, "La casilla destino está ocupada");
+                            }
                         } else {
-                            array_push($this->errores, "La casilla destino está ocupada");
+                            array_push($this->errores, "La dirección del movimiento no es correcto, las blancas mueve hacia arriba y a los lados una unidad");
                         }
-                    } else {
-                        array_push($this->errores, "La dirección del movimiento no es correcto, las blancas mueve hacia arriba y a los lados una unidad");
-                    }
-                } else if (strcmp($this->turno, "negro") === 0) { //Si el turno es del negro....
-                    if (($posYIni + 1 == $posYFin || $posYIni - 1 == $posYFin) && ($posXIni - 1 == $posXFin)) { //....comprueba que mueva hacia abajo y alguno de los lados
+                    } else if (strcmp($this->turno, "negro") === 0) { //Si el turno es del negro....
+                        if (($posYIni + 1 == $posYFin || $posYIni - 1 == $posYFin) && ($posXIni - 1 == $posXFin)) { //....comprueba que mueva hacia abajo y alguno de los lados
 
-                        if ($this->tablero->casillas[$posXFin][$posYFin]->ocupado == false) {
-                            //Y aquí acaba, si no ha habido errores abajo retorna true;
+                            if ($this->tablero->casillas[$posXFin][$posYFin]->ocupado == false) {
+                                //Y aquí acaba, si no ha habido errores abajo retorna true;
+                            } else {
+                                array_push($this->errores, "La casilla destino está ocupada");
+                            }
                         } else {
-                            array_push($this->errores, "La casilla destino está ocupada");
+                            array_push($this->errores, "La dirección del movimiento no es correcto, las negras mueve hacia arriba y a los lados una unidad");
                         }
                     } else {
-                        array_push($this->errores, "La dirección del movimiento no es correcto, las negras mueve hacia arriba y a los lados una unidad");
+                        array_push($this->errores, "El color no coincide con el del turno" . $color . '<br>' . $this->turno);
                     }
                 } else {
-                    array_push($this->errores, "El color no coincide con el del turno" . $color . '<br>' . $this->turno);
+                    array_push($this->errores, "La ficha no es de tu color, le toca al " . $this->turno);
                 }
             } else {
-                array_push($this->errores, "La ficha no es de tu color, le toca al " . $this->turno);
+                array_push($this->errores, "La casilla final no existe");
             }
-        } else {
-            array_push($this->errores, "La casilla final no existe");
+        }else{
+            array_push($this->errores, "La ficha no existe");
         }
 
         if (count($this->errores) > 0) {
