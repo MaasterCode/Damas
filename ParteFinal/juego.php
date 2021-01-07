@@ -189,6 +189,7 @@ class Juego
     }
     function compruebaMover($posXIni, $posYIni, $posXFin, $posYFin)
     {
+        $this->errores = array();
         if (isset($this->tablero->fichas[$posXIni][$posYIni])) {
             if (isset($this->tablero->casillas[$posXFin][$posYFin])) { //Comprueba si la casilla final existe
                 if (strcmp($this->tablero->fichas[$posXIni][$posYIni]->color, $this->turno) === 0) { //Que el color sea el del turno       
