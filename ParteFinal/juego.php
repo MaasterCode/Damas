@@ -275,6 +275,7 @@ class Juego
                         if (($j + $i) % 2 == 0) {
                 ?>
                             <div class="casillaN">
+                            <p><?php echo "$i,$j" ?></p>
                             <?php
                         }
                         if (($j + $i) % 2 != 0) {
@@ -283,7 +284,7 @@ class Juego
                                     <?php
                                 }
                                 if ($this->tablero->casillas[$i][$j]->ocupado) {
-
+                                    
                                     if (strcmp($this->tablero->fichas[$i][$j]->color, "blanco") === 0) {
                                     ?>
                                         <img src="<?php echo $fichaB ?>" alt="">
@@ -296,7 +297,7 @@ class Juego
                                     }
                                 }
                                 ?>
-                                <p><?php echo "$i,$j" ?></p>
+                                
                                 </div>
                         <?php
                     }

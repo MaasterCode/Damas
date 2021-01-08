@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+    session_start();
+?>
 <html lang="es">
 
 <head>
@@ -29,6 +32,7 @@
             min-height: 80px;
             position: relative;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
         }
@@ -84,7 +88,7 @@
             top: 50%;
             transform: translate(-50%, -50%);
             left: 50%;
-            color: #FFDEAD;
+            color: white;
             font-size: 20px;
             z-index: 10;
         }
@@ -105,7 +109,7 @@
             position: relative;
             display: block;
             width: var(--tamaño-imagen);
-            z-index: 10;
+            z-index: 9;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -154,19 +158,41 @@
             height: 15vh;
         }
 
+
+        @media screen and (max-width: 1400px) {
+            * {
+                --tamaño-casillas: 50px;
+                --tamaño-imagen: 40px;
+            }
+
+            #formulario {
+                width: 250px;
+            }
+
+            .formulario label {
+                font-size: 17px;
+            }
+
+            .formulario input {
+                width: 80px;
+                height: 25px;
+            }
+
+            .info{
+                top: 30px;
+            }
+        }
+        
     </style>
 </head>
 
 <body>
     <header>
-        <h2>Bienvenido al juego de las damas</h2>
+        <h3>El juego de las damas</h3><br>
+        <p>Por Belmont y Felix</p>
     </header>
     <main>
         <?php
-
-        session_start();
-
-
         require_once('juego.php');
 
 
@@ -195,15 +221,15 @@
         ?>
             <div class="info">
                 <div class="turno">
-                    <p>Le toca jugar a 
+                    <p>Le toca jugar a
                         <span>
-                        <?php
-                        if(strcmp($juego->turno, "blanco") === 0){
-                            echo 'blancas';
-                        }else if(strcmp($juego->turno, "negro") === 0){
-                            echo 'negras';
-                        }
-                        ?>
+                            <?php
+                            if (strcmp($juego->turno, "blanco") === 0) {
+                                echo 'blancas';
+                            } else if (strcmp($juego->turno, "negro") === 0) {
+                                echo 'negras';
+                            }
+                            ?>
                         </span>
                         <?php
                         if ($juego->sePuedeComer()) {
@@ -266,6 +292,7 @@
                     <p>Han perdido las blancas</p>
                 <?php
                 }
+                session_reset();
                 ?>
                 <a href="./main.php">Volver a jugar</a>
             </div>
