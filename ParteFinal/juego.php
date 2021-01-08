@@ -258,21 +258,18 @@ class Juego
 
     public function promocion()
     {
-        echo "hola";
-        for($j = 1; $j <= 7; $j + 2){
+        for($j = 1; $j <= 7; $j += 2){
             if(isset($this->tablero->fichas[1][$j])){
                 if(strcmp($this->tablero->fichas[1][$j]->color, "negro") === 0){
                     $this->tablero->fichas[1][$j]->cambioCoronado();
-                    echo "coronadoNegras";
                 }
             }
             
         }
-        for($j = 2; $j <= 8; $j + 2){
+        for($j = 2; $j <= 8; $j += 2){
             if(isset($this->tablero->fichas[8][$j])){
                 if(strcmp($this->tablero->fichas[8][$j]->color, "blanco") === 0){
                     $this->tablero->fichas[8][$j]->cambioCoronado();
-                    echo "coronadoBlancas";
                 }
             }
             
@@ -281,8 +278,10 @@ class Juego
 
     public function dibujaTablero()
     {
-        $fichaB = "Imagenes/circuloBlanco.svg";
-        $fichaN = "Imagenes/circuloNegro.svg";
+        $fichaB = "Imagenes/FichaBlanca.svg";
+        $fichaN = "Imagenes/FichaNegra.svg";
+        $reinaB = "Imagenes/ReinaBlanca.svg";
+        $reinaN = "Imagenes/ReinaNegra.svg";
 ?>
         <div class="tableroBox">
             <div class="tablero">
@@ -303,17 +302,32 @@ class Juego
                                     <?php
                                 }
                                 if ($this->tablero->casillas[$i][$j]->ocupado) {
+                                    if($this->tablero->fichas[$i][$j]->coronado == false){
+                                       
+                                        if (strcmp($this->tablero->fichas[$i][$j]->color, "blanco") === 0) {
+                                            ?>
+                                                <img src="<?php echo $fichaB ?>" alt="">
+                                            <?php
+                                            }
+                                            if (strcmp($this->tablero->fichas[$i][$j]->color, "negro") === 0) {
+                                            ?>
+                                                <img src="<?php echo $fichaN ?>" alt="">
+                                        <?php
+                                            }
+                                    }else if($this->tablero->fichas[$i][$j]->coronado == true){
+                                       
+                                        if (strcmp($this->tablero->fichas[$i][$j]->color, "blanco") === 0) {
+                                            ?>
+                                                <img src="<?php echo $reinaB ?>" alt="">
+                                            <?php
+                                            }
+                                            if (strcmp($this->tablero->fichas[$i][$j]->color, "negro") === 0) {
+                                            ?>
+                                                <img src="<?php echo $reinaN ?>" alt="">
+                                        <?php
+                                            }
+                                    }
                                     
-                                    if (strcmp($this->tablero->fichas[$i][$j]->color, "blanco") === 0) {
-                                    ?>
-                                        <img src="<?php echo $fichaB ?>" alt="">
-                                    <?php
-                                    }
-                                    if (strcmp($this->tablero->fichas[$i][$j]->color, "negro") === 0) {
-                                    ?>
-                                        <img src="<?php echo $fichaN ?>" alt="">
-                                <?php
-                                    }
                                 }
                                 ?>
                                 

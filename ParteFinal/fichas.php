@@ -47,7 +47,8 @@
 
         }
         public function cambioCoronado() {
-
+            $this->coronado = true;
+            echo "coronado".$this->color;
         }
     }
 ?>

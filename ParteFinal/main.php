@@ -216,6 +216,7 @@
 
                 $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
             }
+            $juego->promocion();
         }
         if ($juego->comprobarFichas()) {
         ?>
