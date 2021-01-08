@@ -258,6 +258,25 @@ class Juego
 
     public function promocion()
     {
+        echo "hola";
+        for($j = 1; $j <= 7; $j + 2){
+            if(isset($this->tablero->fichas[1][$j])){
+                if(strcmp($this->tablero->fichas[1][$j]->color, "negro") === 0){
+                    $this->tablero->fichas[1][$j]->cambioCoronado();
+                    echo "coronadoNegras";
+                }
+            }
+            
+        }
+        for($j = 2; $j <= 8; $j + 2){
+            if(isset($this->tablero->fichas[8][$j])){
+                if(strcmp($this->tablero->fichas[8][$j]->color, "blanco") === 0){
+                    $this->tablero->fichas[8][$j]->cambioCoronado();
+                    echo "coronadoBlancas";
+                }
+            }
+            
+        }
     }
 
     public function dibujaTablero()
