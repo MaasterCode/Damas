@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <?php
-    session_start();
+session_start();
 ?>
 <html lang="es">
 
@@ -32,15 +32,14 @@
             min-height: 80px;
             position: relative;
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
-            justify-content: center;
+            justify-content: space-evenly;
         }
 
 
         main {
             display: flex;
-            justify-content: space-evenly;
             align-items: center;
             flex-direction: column;
             height: 70vh;
@@ -48,21 +47,13 @@
             width: 100%;
         }
 
-        .info {
-            display: flex;
-            position: relative;
-            flex-direction: row;
-            justify-content: space-between;
-            min-width: 400px;
-            width: 75vw;
-        }
 
-        .info span {
+        header span {
             font-weight: 600;
         }
 
         .juego {
-            position: relative;
+            position: absolute;
             display: flex;
             flex-direction: row;
             justify-content: space-around;
@@ -70,6 +61,8 @@
         }
 
         .tableroBox {
+            position: absolute;
+            left: 50px;
             width: calc(8 * var(--tamaño-casillas));
             height: calc(8 * var(--tamaño-casillas));
             border: 1px solid brown;
@@ -117,7 +110,8 @@
 
         .formulario {
             width: 400px;
-            position: relative;
+            position: absolute;
+            left: 50%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -155,7 +149,11 @@
 
 
         .errores {
+            position: absolute;
+            top: 70px;
+            right: 20px;
             height: 15vh;
+            width: 200px;
         }
 
 
@@ -169,6 +167,10 @@
                 width: 250px;
             }
 
+            .formulario {
+                left: 40%;
+            }
+
             .formulario label {
                 font-size: 17px;
             }
@@ -178,49 +180,47 @@
                 height: 25px;
             }
 
-            .info{
-                top: 30px;
+        }
+
+        @media screen and (max-height: 1000px) and (min-width: 1400px){
+            .juego{
+                top: 250px;
             }
         }
-        
     </style>
 </head>
 
 <body>
-    <header>
-        <h3>El juego de las damas</h3><br>
-        <p>Por Belmont y Felix</p>
-    </header>
-    <main>
-        <?php
-        require_once('juego.php');
+
+    <?php
+    require_once('juego.php');
 
 
-        if (!isset($_POST['empezado'])) {
-            $juego = new Juego();
-            $juego->comienzaJuego();
-            $_POST['empezado'] = true;
+    if (!isset($_POST['empezado'])) {
+        $juego = new Juego();
+        $juego->comienzaJuego();
+        $_POST['empezado'] = true;
+    } else {
+        $juego = unserialize($_SESSION['juego']);
+    }
+
+    if (isset($_POST['enviado'])) {
+        $posXIni = $_POST['posXIni'];
+        $posYIni = $_POST['posYIni'];
+        $posXFin = $_POST['posXFin'];
+        $posYFin = $_POST['posYFin'];
+        if ($juego->sePuedeComer()) {
+
+            $juego->comer($posXIni, $posYIni, $posXFin, $posYFin);
         } else {
-            $juego = unserialize($_SESSION['juego']);
+
+            $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
         }
-
-        if (isset($_POST['enviado'])) {
-            $posXIni = $_POST['posXIni'];
-            $posYIni = $_POST['posYIni'];
-            $posXFin = $_POST['posXFin'];
-            $posYFin = $_POST['posYFin'];
-            if ($juego->sePuedeComer()) {
-
-                $juego->comer($posXIni, $posYIni, $posXFin, $posYFin);
-            } else {
-
-                $juego->mover($posXIni, $posYIni, $posXFin, $posYFin);
-            }
-            $juego->promocion();
-        }
-        if ($juego->comprobarFichas()) {
-        ?>
-            <div class="info">
+        $juego->promocion();
+    }
+    if ($juego->comprobarFichas()) {
+    ?>
+        <header>
                 <div class="turno">
                     <p>Le toca jugar a
                         <span>
@@ -241,13 +241,17 @@
                         ?>
                     </p>
                 </div>
+                <div class="titulo">
+                    <h3>El juego de las damas</h3><br>
+                    <p>Por Belmont y Felix</p>
+                </div>
                 <div class="score">
                     <h3>Puntuación:</h3>
                     <p>Fichas blancas <?php echo $juego->numBlancas ?></p>
                     <p>Fichas negras <?php echo $juego->numNegras ?></p>
                 </div>
-            </div>
-
+        </header>
+        <main>
             <div class="juego">
                 <?php
 
@@ -281,7 +285,7 @@
                 </div>
             </div>
         <?php
-        } else {
+    } else {
 
         ?>
             <div class="perdedor">
@@ -298,10 +302,10 @@
                 <a href="./main.php">Volver a jugar</a>
             </div>
         <?php
-        }
+    }
         ?>
 
-    </main>
+        </main>
 </body>
 
 </html>
