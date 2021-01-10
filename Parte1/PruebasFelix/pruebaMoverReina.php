@@ -10,12 +10,12 @@
 <body>
     <?php
     $myarray = array();
-    
-    $posXIni = 7;
+
+    $posXIni = 8;
     $posYIni = 8;
 
     $posXFin = 1;
-    $posYFin = 2;
+    $posYFin = 1;
 
     $posXIni = $posXIni;
     $posYIni = $posYIni;
@@ -26,31 +26,77 @@
     // echo $posXIni - $posXFin.'<br>';
 
 
-    if ($posYIni - $posYFin < 0 && $posXIni - $posXFin < 0) { //arriba derecha
-        
-        for ($i = $posXIni+1; $i < $posXFin; $i++) {
-           $posY++;
-                echo $i . ' ' . ($posYIni) . '<br>';
-            
+    // if ($posYIni - $posYFin < 0 && $posXIni - $posXFin < 0) { //arriba derecha
+
+    //     for ($i = $posXIni + 1; $i < $posXFin; $i++) {
+    //         $posYIni++;
+    //         if ($tablero->casillas[$i][$posYIni]->ocupado == false) {
+    //         } else if ($tablero->casillas[$i][$posYIni]->ocupado == true) {
+    //             array_push($errores, "Hay una pieza delante");
+    //             break;
+    //         }
+    //     }
+    // } else if ($posYIni - $posYFin < 0 && $posXIni - $posXFin > 0) {  //abajo derecha
+    //     for ($i = $posXIni - 1; $i > $posXFin; $i--) {
+    //         $posYIni++;
+    //         if ($tablero->casillas[$i][$posYIni]->ocupado == false) {
+    //         } else if ($tablero->casillas[$i][$posYIni]->ocupado == true) {
+    //             array_push($errores, "Hay una pieza delante");
+    //             break;
+    //         }
+    //     }
+    // } else if ($posYIni - $posYFin > 0 && $posXIni - $posXFin < 0) { //Arriba iz
+    //     for ($i = $posXIni + 1; $i < $posXFin; $i++) {
+    //         $posYIni--;
+    //         if ($tablero->casillas[$i][$posYIni]->ocupado == false) {
+    //         } else if ($tablero->casillas[$i][$posYIni]->ocupado == true) {
+    //             array_push($errores, "Hay una pieza delante");
+    //             break;
+    //         }
+    //     }
+    // } else if ($posYIni - $posYFin > 0 && $posXIni - $posXFin > 0) { //abajo iz
+    //     for ($i = $posXIni - 1; $i > $posXFin; $i--) {
+    //         $posYIni--;
+    //         if ($tablero->casillas[$i][$posYIni]->ocupado == false) {
+    //         } else if ($tablero->casillas[$i][$posYIni]->ocupado == true) {
+    //             array_push($errores, "Hay una pieza delante");
+    //             break;
+    //         }
+    //     }
+    // }
+
+    if ($posXIni - $posXFin < 0) {  //Arriba
+
+        if ($posYIni - $posYFin > 0) {
+            $suma = 1;
+        } else if ($posYIni - $posYFin < 0) {
+            $suma = -1;
         }
-    }else if($posYIni - $posYFin < 0 && $posXIni - $posXFin > 0){  //abajo derecha
-        for ($i = $posXIni-1; $i > $posXFin; $i--) {
-            $posYIni++;
-                 echo $i . ' ' . ($posYIni) . '<br>';
-             
-         }
-    }else if ($posYIni - $posYFin > 0 && $posXIni - $posXFin < 0) { //Arriba iz
-        for ($i = $posXIni+1; $i < $posXFin; $i++) {
-            $posYIni--;
-                 echo $i . ' ' . ($posYIni) . '<br>';
-             
-         }
-    }else if ($posYIni - $posYFin > 0 && $posXIni - $posXFin > 0) { //abajo iz
-        for ($i = $posXIni-1; $i > $posXFin; $i--) {
-            $posYIni--;
-                 echo $i . ' ' . ($posYIni) . '<br>';
-             
-         }
+        for ($i = $posXIni + 1; $i < $posXFin; $i++) {
+            $posYIni += $suma;
+            echo $i . ' ' . $posYIni;
+            if ($this->tablero->casillas[$i][$posYIni]->ocupado == false) {
+            } else if ($this->tablero->casillas[$i][$posYIni]->ocupado == true) {
+                array_push($this->errores, "Hay una pieza delante");
+                break;
+            }
+        }
+    } else if ($posXIni - $posXFin > 0) {  //Abajo
+
+        if ($posYIni - $posYFin > 0) {
+            $suma = 1;
+        } else if ($posYIni - $posYFin < 0) {
+            $suma = -1;
+        }
+        for ($i = $posXIni - 1; $i > $posXFin; $i--) {
+            $posYIni += $suma;
+            echo $i . ' ' . $posYIni . '<br>';
+            if ($this->ablero->casillas[$i][$posYIni]->ocupado == false) {
+            } else if ($this->tablero->casillas[$i][$posYIni]->ocupado == true) {
+                array_push($this->errores, "Hay una pieza delante");
+                break;
+            }
+        }
     }
     ?>
 </body>

@@ -215,7 +215,7 @@ class Juego
                                     array_push($this->errores, "La casilla destino está ocupada");
                                 }
                             } else {
-                                array_push($this->errores, "La dirección del movimiento no es correcto, las negras mueven hacia arriba y a los lados una unidad");
+                                array_push($this->errores, "La dirección del movimiento no es correcto, las negras mueven hacia abajo y a los lados una unidad");
                             }
                         } else {
                             array_push($this->errores, "El color no coincide con el del turno" . $this->turno . '<br>');
@@ -224,38 +224,33 @@ class Juego
                         if (abs($posYIni - $posYFin) == abs($posXIni - $posXFin) && $posXIni - $posXFin != 0 && $posYIni - $posYFin != 0) { //Comprueba que se avanza lo mismo en vertical que en horizontal
                             //Mira la direccion del desplazamiento
 
-                            if ($posYIni - $posYFin < 0 && $posXIni - $posXFin < 0) { //arriba derecha
+                            if ($posXIni - $posXFin < 0) {  //Arriba
 
+                                if ($posYIni - $posYFin > 0) {
+                                    $suma = 1;
+                                } else if ($posYIni - $posYFin < 0) {
+                                    $suma = -1;
+                                }
                                 for ($i = $posXIni + 1; $i < $posXFin; $i++) {
-                                    $posYIni++;
+                                    $posYIni += $suma;
+                                    echo $i . ' ' . $posYIni;
                                     if ($this->tablero->casillas[$i][$posYIni]->ocupado == false) {
                                     } else if ($this->tablero->casillas[$i][$posYIni]->ocupado == true) {
                                         array_push($this->errores, "Hay una pieza delante");
                                         break;
                                     }
                                 }
-                            } else if ($posYIni - $posYFin < 0 && $posXIni - $posXFin > 0) {  //abajo derecha
+                            } else if ($posXIni - $posXFin > 0) {  //Abajo
+                        
+                                if ($posYIni - $posYFin > 0) {
+                                    $suma = 1;
+                                } else if ($posYIni - $posYFin < 0) {
+                                    $suma = -1;
+                                }
                                 for ($i = $posXIni - 1; $i > $posXFin; $i--) {
-                                    $posYIni++;
-                                    if ($this->tablero->casillas[$i][$posYIni]->ocupado == false) {
-                                    } else if ($this->tablero->casillas[$i][$posYIni]->ocupado == true) {
-                                        array_push($this->errores, "Hay una pieza delante");
-                                        break;
-                                    }
-                                }
-                            } else if ($posYIni - $posYFin > 0 && $posXIni - $posXFin < 0) { //Arriba iz
-                                for ($i = $posXIni + 1; $i < $posXFin; $i++) {
-                                    $posYIni--;
-                                    if ($this->tablero->casillas[$i][$posYIni]->ocupado == false) {
-                                    } else if ($this->tablero->casillas[$i][$posYIni]->ocupado == true) {
-                                        array_push($this->errores, "Hay una pieza delante");
-                                        break;
-                                    }
-                                }
-                            } else if ($posYIni - $posYFin > 0 && $posXIni - $posXFin > 0) { //abajo iz
-                                for ($i = $posXIni - 1; $i > $posXFin; $i--) {
-                                    $posYIni--;
-                                    if ($this->tablero->casillas[$i][$posYIni]->ocupado == false) {
+                                    $posYIni += $suma;
+                                    echo $i . ' ' . $posYIni . '<br>';
+                                    if ($this->ablero->casillas[$i][$posYIni]->ocupado == false) {
                                     } else if ($this->tablero->casillas[$i][$posYIni]->ocupado == true) {
                                         array_push($this->errores, "Hay una pieza delante");
                                         break;
