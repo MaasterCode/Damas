@@ -110,13 +110,7 @@ session_start();
 
         .tablero .reinaBlanca{
             width: 50px;
-            top: 25px;
-        }
-
-        .tablero .pRreinaBlanca {
-            color: black;
-            font-weight: 700;
-            position: absolute;
+            top: 22px;
         }
 
         .formulario {

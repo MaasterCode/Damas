@@ -234,7 +234,7 @@ class Juego
                                 }
                                 for ($i = $posXIni + 1; $i < $posXFin; $i++) {
                                     $posYIni += $suma;
-                                    echo $i . ' ' . $posYIni;
+                                
                                     if ($this->tablero->casillas[$i][$posYIni]->ocupado == false) {
                                     } else if ($this->tablero->casillas[$i][$posYIni]->ocupado == true) {
                                         array_push($this->errores, "Hay una pieza delante");
@@ -250,8 +250,8 @@ class Juego
                                 }
                                 for ($i = $posXIni - 1; $i > $posXFin; $i--) {
                                     $posYIni += $suma;
-                                    echo $i . ' ' . $posYIni . '<br>';
-                                    if ($this->ablero->casillas[$i][$posYIni]->ocupado == false) {
+                                   
+                                    if ($this->tablero->casillas[$i][$posYIni]->ocupado == false) {
                                     } else if ($this->tablero->casillas[$i][$posYIni]->ocupado == true) {
                                         array_push($this->errores, "Hay una pieza delante");
                                         break;
