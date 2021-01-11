@@ -70,17 +70,20 @@
             $this->casillas[$posXFin][$posYFin]->cambioOcupado($ficha);
         }
 
-        public function  comeFicha($posXIni, $posYIni, $posXFin, $posYFin) {
-            $ficha = $this->casillas[$posXIni][$posYIni]->ficha;
-            $fichaComida = $ficha->comeFicha($posXFin, $posYFin);
-            $this->fichas[$posXIni][$posYIni] = null;
-            $this->fichas[$posXFin][$posYFin] = $ficha;
-            $this->casillas[$posXIni][$posYIni]->cambioOcupado(null);
-            $this->casillas[$posXFin][$posYFin]->cambioOcupado($ficha);
+        public function  comeFicha($posXIni, $posYIni, $posXFin, $posYFin, $tablero) {
+            $ficha = $tablero->casillas[$posXIni][$posYIni]->ficha;
+            if ($ficha->coronado == false) {
+                $fichaComida = $ficha->comeFicha($posXFin, $posYFin);
+            } else if ($ficha->coronado) {
+                $fichaComida = $ficha->comeFichaCoronado($posXFin, $posYFin, $tablero);
+            }
+                $this->fichas[$posXIni][$posYIni] = null;
+                $this->fichas[$posXFin][$posYFin] = $ficha;
+                $this->casillas[$posXIni][$posYIni]->cambioOcupado(null);
+                $this->casillas[$posXFin][$posYFin]->cambioOcupado($ficha);
 
-            $this->fichas[$fichaComida->posX][$fichaComida->posY]->vivo = false;
-            $this->fichas[$fichaComida->posX][$fichaComida->posY] = null;
-            $this->casillas[$fichaComida->posX][$fichaComida->posY]->cambioOcupado(null);
+                $this->fichas[$fichaComida->posX][$fichaComida->posY] = null;
+                $this->casillas[$fichaComida->posX][$fichaComida->posY]->cambioOcupado(null);
         }
 
         //Devuelve false si una casilla está ocuapada

@@ -4,7 +4,6 @@
         public $posX;
         public $posY;
         public $color;
-        public $vivo;
         public $coronado;
 
         function __construct($i, $j, $color_)
@@ -12,7 +11,6 @@
             $this->posX = $i;
             $this->posY = $j;
             $this->color = $color_;
-            $this->vivo = true;
             $this->coronado = false;
         }
         public function mueveFicha($nuevaPosX, $nuevaPosY) {
@@ -41,6 +39,46 @@
                 $color = "negro";
             }
             $fichaComida = new Ficha($x, $y, $color);
+            return $fichaComida;
+        }
+        public function comeFichaCoronado($nuevaPosX, $nuevaPosY, $tablero) {
+            if (strcmp($this->color, "negro") === 0) {
+                $color = "blanco";
+            } else {
+                $color = "negro";
+            }
+
+            if ($nuevaPosY - $this->posY > 0) {
+                $suma = 1;
+            } else if ($nuevaPosY - $this->posY < 0) {
+                $suma = -1;
+            }
+            
+            if ($nuevaPosX - $this->posX > 0) {
+                $j = $this->posY;
+                for ($i = $this->posX + 1; $i < $nuevaPosX; $i++) {
+                    $j += $suma;
+                    if (isset($tablero->casillas[$i][$j]) && $tablero->casillas[$i][$j]->ocupado) {
+                        $fichaComida = new Ficha($i, $j, $color);
+                        break;
+                    }
+                }
+            }
+
+            if ($nuevaPosX - $this->posX < 0) {
+                $j = $this->posY;
+                for ($i = $this->posX - 1; $i > $nuevaPosX; $i--) {
+                    $j += $suma;
+                    if (isset($tablero->casillas[$i][$j]) && $tablero->casillas[$i][$j]->ocupado) {
+                        $fichaComida = new Ficha($i, $j, $color);
+                        break;
+                    }
+                }
+            }
+            
+            $this->posX = $nuevaPosX;
+            $this->posY = $nuevaPosY;
+
             return $fichaComida;
         }
         public function cambioEstado() {
