@@ -108,6 +108,17 @@ session_start();
             transform: translate(-50%, -50%);
         }
 
+        .tablero .reinaBlanca{
+            width: 50px;
+            top: 25px;
+        }
+
+        .tablero .pRreinaBlanca {
+            color: black;
+            font-weight: 700;
+            position: absolute;
+        }
+
         .formulario {
             width: 400px;
             position: absolute;
@@ -209,7 +220,7 @@ session_start();
         $posYIni = $_POST['posYIni'];
         $posXFin = $_POST['posXFin'];
         $posYFin = $_POST['posYFin'];
-        if ($juego->sePuedeComer()) {
+        if ($juego->sePuedeComer($posXIni, $posYIni)) {
 
             $juego->comer($posXIni, $posYIni, $posXFin, $posYFin);
         } else {

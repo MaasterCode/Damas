@@ -75,8 +75,9 @@ class Juego
         return false;
     }
 
-    public function puedeSeguirComendo($posX, $posY)
+    private function puedeSeguirComendo($posX, $posY)
     {
+        
         $color = $this->tablero->fichas[$posX][$posY]->color;
 
         if (strcmp($color, "blanco") === 0) {
@@ -357,7 +358,9 @@ class Juego
 
                                         if (strcmp($this->tablero->fichas[$i][$j]->color, "blanco") === 0) {
                                         ?>
-                                            <img src="<?php echo $reinaB ?>" alt="">
+                                            <img class = "reinaBlanca" src="<?php echo $reinaB ?>" alt="">
+                                            <p style= "color:black; font-weight: 700; position:absolute"><?php echo "$i,$j" ?></p>
+                                            
                                         <?php
                                         }
                                         if (strcmp($this->tablero->fichas[$i][$j]->color, "negro") === 0) {
