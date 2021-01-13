@@ -42,7 +42,7 @@
             return $fichaComida;
         }
         public function comeFichaCoronado($nuevaPosX, $nuevaPosY, $tablero) {
-            var_dump($tablero->getCasillas()[$i][$j]);
+            var_dump($tablero->getCasillas()[5][7]);
 
             if (strcmp($this->color, "negro") === 0) {
                 $color = "blanco";
@@ -93,6 +93,7 @@
 
         }
         public function cambioCoronado() {
+            var_dump($this);
             $this->coronado = true;
         }
 
