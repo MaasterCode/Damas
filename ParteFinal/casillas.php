@@ -1,10 +1,10 @@
 <?php
 class Casilla
 {
-    public $ocupado;
-    public $ficha;
-    public $posicionX; //ej 13 columna 1 fila 3
-    public $posicionY;
+    private $ocupado;
+    private $ficha;
+    private $posicionX; //ej 13 columna 1 fila 3
+    private $posicionY;
     function __construct($posX, $posY)
     {
         $this->ocupado = false;
@@ -32,5 +32,21 @@ class Casilla
         } else {
             return false;
         }
+    }
+
+    public function getOcupado(){
+        return $this->ocupado;
+    }
+
+    public function getFicha(){
+        return $this->ficha;
+    }
+
+    public function getPosX(){
+        return $this->posX;
+    }
+
+    public function getPosY(){
+        return $this->posY;
     }
 }
