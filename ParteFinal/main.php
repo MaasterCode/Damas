@@ -22,7 +22,7 @@ session_start();
 
         body {
             position: absolute;
-            top: 0;
+      b      top: 0;
             min-height: 100vh;
             width: 100%;
         }
@@ -230,9 +230,9 @@ session_start();
                     <p>Le toca jugar a
                         <span>
                             <?php
-                            if (strcmp($juego->turno, "blanco") === 0) {
+                            if (strcmp($juego->getTurno(), "blanco") === 0) {
                                 echo 'blancas';
-                            } else if (strcmp($juego->turno, "negro") === 0) {
+                            } else if (strcmp($juego->getTurno(), "negro") === 0) {
                                 echo 'negras';
                             }
                             ?>
@@ -252,8 +252,8 @@ session_start();
                 </div>
                 <div class="score">
                     <h3>Puntuación:</h3>
-                    <p>Fichas blancas <?php echo $juego->numBlancas ?></p>
-                    <p>Fichas negras <?php echo $juego->numNegras ?></p>
+                    <p>Fichas blancas <?php echo $juego->getNumBlancas() ?></p>
+                    <p>Fichas negras <?php echo $juego->getNumNegras() ?></p>
                 </div>
         </header>
         <main>
@@ -283,7 +283,7 @@ session_start();
                 <div class="errores">
                     <?php
 
-                    if (count($juego->errores) > 0) {
+                    if (count($juego->getErrores()) > 0) {
                         $juego->mostrarErrores();
                     }
                     ?>
@@ -295,10 +295,10 @@ session_start();
         ?>
             <div class="perdedor">
                 <?php
-                if ($juego->numNegras < 1) { ?>
+                if ($juego->getNumNegras() < 1) { ?>
                     <p>Han perdido las negras</p>
                 <?php
-                } else if ($juego->numBlancas < 1) { ?>
+                } else if ($juego->getNumBlancas() < 1) { ?>
                     <p>Han perdido las blancas</p>
                 <?php
                 }

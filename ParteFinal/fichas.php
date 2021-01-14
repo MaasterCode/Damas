@@ -1,10 +1,10 @@
 <?php
     class Ficha{
 
-        public $posX;
-        public $posY;
-        public $color;
-        public $coronado;
+        private $posX;
+        private $posY;
+        private $color;
+        private $coronado;
 
         function __construct($i, $j, $color_)
         {
@@ -42,6 +42,7 @@
             return $fichaComida;
         }
         public function comeFichaCoronado($nuevaPosX, $nuevaPosY, $tablero) {
+
             if (strcmp($this->color, "negro") === 0) {
                 $color = "blanco";
             } else {
@@ -53,12 +54,16 @@
             } else if ($nuevaPosY - $this->posY < 0) {
                 $suma = -1;
             }
+
+            
             
             if ($nuevaPosX - $this->posX > 0) {
                 $j = $this->posY;
                 for ($i = $this->posX + 1; $i < $nuevaPosX; $i++) {
                     $j += $suma;
-                    if (isset($tablero->casillas[$i][$j]) && $tablero->casillas[$i][$j]->ocupado) {
+                    
+                    if (isset($tablero->getCasillas()[$i][$j]) && $tablero->getCasillas()[$i][$j]->getOcupado()) {
+                       
                         $fichaComida = new Ficha($i, $j, $color);
                         break;
                     }
@@ -69,7 +74,8 @@
                 $j = $this->posY;
                 for ($i = $this->posX - 1; $i > $nuevaPosX; $i--) {
                     $j += $suma;
-                    if (isset($tablero->casillas[$i][$j]) && $tablero->casillas[$i][$j]->ocupado) {
+                   
+                    if (isset($tablero->getCasillas()[$i][$j]) && $tablero->getCasillas()[$i][$j]->getOcupado()) {
                         $fichaComida = new Ficha($i, $j, $color);
                         break;
                     }
@@ -86,6 +92,19 @@
         }
         public function cambioCoronado() {
             $this->coronado = true;
+        }
+
+        public function getPosX() {
+            return $this->posX;
+        }
+        public function getPosY() {
+            return $this->posY;
+        }
+        public function getColor() {
+            return $this->color;
+        }
+        public function getCoronado() {
+            return $this->coronado;
         }
     }
 ?>
