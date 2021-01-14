@@ -71,8 +71,6 @@ class Juego
                     $y = 1;
                     $flag = true;
                     while ($flag) {
-                        echo "$i , $j<br>";
-                        echo "$x , $y<br>";
                         if (isset($this->tablero->getCasillas()[$i + $x][$j + $y])) {
                             if ($this->tablero->getCasillas()[$i + $x][$j + $y]->getOcupado()) {
 
@@ -81,16 +79,6 @@ class Juego
                                 }
                                 if (strcmp($this->tablero->getCasillas()[$i + $x][$j + $y]->getFicha()->getColor(), $ficha->getColor()) !== 0) {
                                     if (isset($this->tablero->getCasillas()[$i + $x + 1][$j + $y + 1]) && $this->tablero->getCasillas()[$i + $x + 1][$j + $y + 1]->getOcupado() == false) {
-                                        echo "<div style= \"width: 100%;position: absolute; right: 0; top: 100%;\">";
-                                        echo "<pre>";
-                                        var_dump($this->tablero);
-                                        // var_dump($this->tablero->getCasillas()[$i + $x - 1][$j + $y - 1]); // 2 4
-                                        // var_dump($this->tablero->getCasillas()[$i + $x][$j + $y ]);       // 3 5
-                                        // var_dump($this->tablero->getCasillas()[$i + $x + 1][$j + $y + 1]); // 4 6
-                                        // echo "$i, $j";
-                                        // echo "$x, $y";
-                                        echo "</pre>";
-                                        echo "</div>"; 
                                         return true;
                                     } else {
                                         break;
@@ -138,9 +126,9 @@ class Juego
                                 if (strcmp($this->tablero->getCasillas()[$i - $x][$j + $y]->getFicha()->getColor(), $ficha->getColor()) !== 0) {
                                     if (isset($this->tablero->getCasillas()[$i - $x - 1][$j + $y + 1]) && $this->tablero->getCasillas()[$i - $x - 1][$j + $y + 1]->getOcupado() == false) {
                                         return true;
+                                    }else{
+                                        break;
                                     }
-                                }else{
-                                    break;
                                 }
                             }
                         } else {

@@ -14,7 +14,7 @@
             $this->coronado = false;
         }
         public function mueveFicha($nuevaPosX, $nuevaPosY) {
-            $this->posY = $nuevaPosX;
+            $this->posX = $nuevaPosX;
             $this->posY = $nuevaPosY;
         }
         public function comeFicha($nuevaPosX, $nuevaPosY) {
@@ -42,7 +42,6 @@
             return $fichaComida;
         }
         public function comeFichaCoronado($nuevaPosX, $nuevaPosY, $tablero) {
-            var_dump($tablero->getCasillas()[5][7]);
 
             if (strcmp($this->color, "negro") === 0) {
                 $color = "blanco";
@@ -56,7 +55,6 @@
                 $suma = -1;
             }
 
-            echo "$nuevaPosX,$this->posX,$nuevaPosY, $this->posY";
             
             
             if ($nuevaPosX - $this->posX > 0) {
@@ -93,7 +91,6 @@
 
         }
         public function cambioCoronado() {
-            var_dump($this);
             $this->coronado = true;
         }
 
