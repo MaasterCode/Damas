@@ -107,4 +107,3 @@
             return $this->coronado;
         }
     }
-?>

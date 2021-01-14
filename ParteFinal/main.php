@@ -22,9 +22,10 @@ session_start();
 
         body {
             position: absolute;
-      b      top: 0;
+            top: 0;
             min-height: 100vh;
             width: 100%;
+            background: #f7f7f7;
         }
 
         header {
@@ -58,6 +59,7 @@ session_start();
             flex-direction: row;
             justify-content: space-around;
             width: 100vw;
+            min-height: 70vh;
         }
 
         .tableroBox {
@@ -78,10 +80,9 @@ session_start();
 
         .tablero p {
             position: absolute;
-            top: 50%;
+            top: 55%;
             transform: translate(-50%, -50%);
             left: 50%;
-            color: white;
             font-size: 20px;
             z-index: 10;
         }
@@ -92,6 +93,7 @@ session_start();
 
         .casillaB {
             background-color: #FFDEAD;
+
         }
 
         .casillaN {
@@ -108,7 +110,7 @@ session_start();
             transform: translate(-50%, -50%);
         }
 
-        .tablero .reinaBlanca{
+        .tablero .reinaBlanca {
             width: 50px;
             top: 22px;
         }
@@ -122,6 +124,7 @@ session_start();
             justify-content: center;
             align-items: center;
             margin: 15px;
+            padding: 10px;
         }
 
         .formulario label {
@@ -156,9 +159,97 @@ session_start();
         .errores {
             position: absolute;
             top: 70px;
-            right: 20px;
+            right: 40px;
             height: 15vh;
-            width: 200px;
+            width: 250px;
+            padding: 10px;
+        }
+
+        .ficha {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            height: 85%;
+            clip-path: circle(50px at center);
+            border-radius: 50%;
+        }
+
+        .fichaBlanca {
+            background: white;
+        }
+
+        .fichaNegra {
+            background: black;
+        }
+
+        .dama{
+            position: absolute;
+            top: -5px;
+            left: -3px;
+        }
+
+        .damaNegra,
+        .damaBlanca {
+            width: calc(var(--tamaño-casillas) + 6px);
+            height: calc(var(--tamaño-casillas) + 6px);
+        }
+
+        .poligonoBlanco {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(30% 75%, 68.67% 75.00%, 88.67% 37.33%, 62.34% 50%, 48.67% 13.33%, 35% 50%, 8.66% 38%);
+            background: white;
+        }
+
+        .poligonoNegro {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(30% 75%, 70% 75%, 88.67% 37.33%, 62.34% 50%, 48.67% 13.33%, 35% 50%, 8.66% 38.00%);
+            background: black;
+        }
+
+        .tablero .corona {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .coronaBlanca {
+
+            background: white;
+        }
+
+        .coronaNegra {
+
+            background: black;
+        }
+
+        .corona:nth-child(2) {
+            left: 5%;
+            top: 33%;
+        }
+
+        .corona:nth-child(3) {
+            left: 41%;
+            top: 10%;
+        }
+
+        .corona:nth-child(4) {
+            right: 4%;
+            top: 33%;
+        }
+
+        .pNegro {
+            color: black;
+        }
+
+        .pBlanco {
+            color: white;
         }
 
 
@@ -173,7 +264,8 @@ session_start();
             }
 
             .formulario {
-                left: 40%;
+                left: 50%;
+                width: 250px;
             }
 
             .formulario label {
@@ -185,10 +277,21 @@ session_start();
                 height: 25px;
             }
 
+            .tablero p{
+                font-size: 16px;
+            }
+
         }
 
-        @media screen and (max-height: 1000px) and (min-width: 1400px){
-            .juego{
+        @media screen and (max-width: 1000px) {
+            .errores {
+                right: 0px;
+                width: 225px;
+            }
+        }
+
+        @media screen and (max-height: 1000px) and (min-width: 1400px) {
+            .juego {
                 top: 250px;
             }
         }
@@ -226,35 +329,36 @@ session_start();
     if ($juego->comprobarFichas()) {
     ?>
         <header>
-                <div class="turno">
-                    <p>Le toca jugar a
-                        <span>
-                            <?php
-                            if (strcmp($juego->getTurno(), "blanco") === 0) {
-                                echo 'blancas';
-                            } else if (strcmp($juego->getTurno(), "negro") === 0) {
-                                echo 'negras';
-                            }
-                            ?>
-                        </span>
+            <div class="turno">
+                <h4>Turno:</h4>
+                <p>Le toca jugar a
+                    <span>
                         <?php
-                        if ($juego->sePuedeComer()) {
-                        ?>
-                            ,<br> le toca comer
-                        <?php
+                        if (strcmp($juego->getTurno(), "blanco") === 0) {
+                            echo 'blancas';
+                        } else if (strcmp($juego->getTurno(), "negro") === 0) {
+                            echo 'negras';
                         }
                         ?>
-                    </p>
-                </div>
-                <div class="titulo">
-                    <h3>El juego de las damas</h3><br>
-                    <p>Por Belmont y Felix</p>
-                </div>
-                <div class="score">
-                    <h3>Puntuación:</h3>
-                    <p>Fichas blancas <?php echo $juego->getNumBlancas() ?></p>
-                    <p>Fichas negras <?php echo $juego->getNumNegras() ?></p>
-                </div>
+                    </span>
+                    <?php
+                    if ($juego->sePuedeComer()) {
+                    ?>
+                        ,<br> le toca comer
+                    <?php
+                    }
+                    ?>
+                </p>
+            </div>
+            <div class="titulo">
+                <h3>El juego de las damas</h3><br>
+                <p>Por Belmont y Felix</p>
+            </div>
+            <div class="score">
+                <h3>Fichas en juego:</h3>
+                <p>Blancas <?php echo $juego->getNumBlancas() ?></p>
+                <p>Negras <?php echo $juego->getNumNegras() ?></p>
+            </div>
         </header>
         <main>
             <div class="juego">
@@ -281,6 +385,7 @@ session_start();
                 </div>
 
                 <div class="errores">
+                    <h4>Errores</h4>
                     <?php
 
                     if (count($juego->getErrores()) > 0) {

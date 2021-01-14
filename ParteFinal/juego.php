@@ -103,7 +103,7 @@ class Juego
                                 if (strcmp($this->tablero->getCasillas()[$i + $x][$j - $y]->getFicha()->getColor(), $ficha->getColor()) !== 0) {
                                     if (isset($this->tablero->getCasillas()[$i + $x + 1][$j - $y - 1]) && $this->tablero->getCasillas()[$i + $x + 1][$j - $y - 1]->getOcupado() == false) {
                                         return true;
-                                    }else{
+                                    } else {
                                         break;
                                     }
                                 }
@@ -126,7 +126,7 @@ class Juego
                                 if (strcmp($this->tablero->getCasillas()[$i - $x][$j + $y]->getFicha()->getColor(), $ficha->getColor()) !== 0) {
                                     if (isset($this->tablero->getCasillas()[$i - $x - 1][$j + $y + 1]) && $this->tablero->getCasillas()[$i - $x - 1][$j + $y + 1]->getOcupado() == false) {
                                         return true;
-                                    }else{
+                                    } else {
                                         break;
                                     }
                                 }
@@ -149,7 +149,7 @@ class Juego
                                 if (strcmp($this->tablero->getCasillas()[$i - $x][$j - $y]->getFicha()->getColor(), $ficha->getColor()) !== 0) {
                                     if (isset($this->tablero->getCasillas()[$i - $x - 1][$j - $y - 1]) && $this->tablero->getCasillas()[$i - $x - 1][$j - $y - 1]->getOcupado() == false) {
                                         return true;
-                                    }else{
+                                    } else {
                                         break;
                                     }
                                 }
@@ -554,78 +554,107 @@ class Juego
         <div class="tableroBox">
             <div class="tablero">
                 <?php
-                //Hay que definir el tamaño fuera
                 $tamaño = 8;
                 for ($i = $tamaño; $i >= 1; $i--) {
                     for ($j = 1; $j <= $tamaño; $j++) {
                         if (($j + $i) % 2 == 0) {
                 ?>
                             <div class="casillaN">
-                                <p><?php echo "$i,$j" ?></p>
-                            <?php
-                        }
-                        if (($j + $i) % 2 != 0) {
-                            ?>
-                                <div class="casillaB">
-                                    <?php
-                                }
+                                <?php
                                 if ($this->tablero->getCasillas()[$i][$j]->getOcupado()) {
                                     if ($this->tablero->getFichas()[$i][$j]->getCoronado() == false) {
 
                                         if (strcmp($this->tablero->getFichas()[$i][$j]->getColor(), "blanco") === 0) {
-                                    ?>
-                                            <img src="<?php echo $fichaB ?>" alt="">
+                                ?>
+                                            <!-- <img src="<?php// echo $fichaB ?>" alt=""> -->
+                                            <div class="fichaBlanca ficha"></div>
+                                            <p class="pNegro"><?php echo "$i,$j" ?></p>
                                         <?php
                                         }
                                         if (strcmp($this->tablero->getFichas()[$i][$j]->getColor(), "negro") === 0) {
                                         ?>
-                                            <img src="<?php echo $fichaN ?>" alt="">
+                                            <!-- <img src="<?php //echo $fichaN 
+                                                            ?>" alt=""> -->
+                                            <div class="fichaNegra ficha"></div>
+                                            <p class="pBlanco"><?php echo "$i,$j" ?></p>
                                         <?php
                                         }
                                     } else if ($this->tablero->getFichas()[$i][$j]->getCoronado() == true) {
 
                                         if (strcmp($this->tablero->getFichas()[$i][$j]->getColor(), "blanco") === 0) {
                                         ?>
-                                            <img src="<?php echo $reinaB ?>" alt="">
+                                            <!-- <img src="<?php// echo $reinaB ?>" alt=""> -->
+                                            <div class="damaBlanca dama">
+                                                <div class="poligonoBlanco"></div>
+                                                <div class="corona coronaNegra"></div>
+                                                <div class="corona coronaNegra"></div>
+                                                <div class="corona coronaNegra"></div>
+                                            </div>
+                                            <p class="pNegro"><?php echo "$i,$j" ?></p>
                                         <?php
                                         }
                                         if (strcmp($this->tablero->getFichas()[$i][$j]->getColor(), "negro") === 0) {
                                         ?>
-                                            <img src="<?php echo $reinaN ?>" alt="">
-                                <?php
+                                            <!-- <img src="<?php //echo $reinaN 
+                                                            ?>" alt=""> -->
+
+                                            <div class="damaNegra dama">
+                                                <div class="poligonoNegro"></div>
+                                                <div class="corona coronaBlanca"></div>
+                                                <div class="corona coronaBlanca"></div>
+                                                <div class="corona coronaBlanca"></div>
+                                            </div>
+                                            <p class="pBlanco"><?php echo "$i,$j" ?></p>
+                                    <?php
                                         }
                                     }
+                                } else {
+                                    ?>
+                                    <p class="pBlanco"><?php echo "$i,$j" ?></p>
+                                <?php
                                 }
-                                ?>
 
-                                </div>
+                                ?>
+                            </div>
+
                         <?php
+                        }
+                        if (($j + $i) % 2 != 0) {
+                        ?>
+                            <div class="casillaB"></div>
+                <?php
+                        }
                     }
                 }
 
-                        ?>
-                            </div>
+                ?>
             </div>
-    <?php
+        </div>
+<?php
     }
 
-    public function getTurno(){
+    public function getTurno()
+    {
         return $this->turno;
     }
 
-    public function getTablero(){
+    public function getTablero()
+    {
         return $this->tablero;
     }
 
-    public function getErrores(){
+    public function getErrores()
+    {
         return $this->errores;
     }
 
-    public function getNumBlancas(){
+    public function getNumBlancas()
+    {
         return $this->numBlancas;
     }
 
-    public function getNumNegras(){
+    public function getNumNegras()
+    {
         return $this->numNegras;
     }
 }
